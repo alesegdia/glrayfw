@@ -33,6 +33,8 @@ public:
 	Transform transform;
 	EntityController* controller;
 
+	virtual ~Entity();
+
 	Entity()
 	{
 		isAlive = true;
