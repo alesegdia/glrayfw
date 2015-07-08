@@ -16,6 +16,7 @@
 #include "font.h"
 #include "../entity/pawn.h"
 #include "../map/map.h"
+#include "camera.h"
 
 
 class Renderer
@@ -45,14 +46,16 @@ private:
 	GLuint attribute_coord, uniform_tex, uniform_color;
 	GLuint fontvao, fontvbo;
 	int ww, wh;
+	Camera* cam;
 
 public:
 
-	void Prepare( Render::Context* gl, int winWidth, int winHeight )
+	void Prepare( Render::Context* gl, Camera* cam, int winWidth, int winHeight )
 	{
 		this->gl = gl;
 		this->ww = winWidth;
 		this->wh = winHeight;
+		this->cam = cam;
 
 		fontprog.Prepare( gl, "assets/vs_font.vert", "assets/fs_font.frag" );
 		attribute_coord = gl->GetAttribLocation( fontprog.Object(), "coord" );
@@ -353,11 +356,20 @@ public:
 	}
 
 	cml::vector3f viewerPos;
-	void SetViewerPos( cml::vector3f& vp )
+	void SetViewerPos( const cml::vector3f& vp )
 	{
 		viewerPos = vp;
 	}
 
+	void SetupRender() {
+		SetViewerPos( -cam->GetPosition() );
+
+		// SETUP MVP MATRICES
+		BindPostFBO();
+		gl->Enable(GL_DEPTH_TEST);
+		SetVP( cam->GetView(), cam->GetProjection() );
+		RenderClear();
+	}
 
 	void Dispose()
 	{
