@@ -21,6 +21,11 @@ void Transform::Update(const Transform& parent, uint32_t delta)
 	cml::matrix_set_translation( worldtrans, position );
 
 	world = parent.world * worldtrans * localrot * localtrans * invrot;
+
+	cml::matrix44f_c worldrot = cml::identity<4>();
+	cml::matrix_rotation_euler( worldrot, rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
+	worldFinal = world * worldrot;
+
 	if( this->entity )
 		this->entity->Step( delta );
 
@@ -64,7 +69,5 @@ void Transform::AddChild(Transform* child)
 
 cml::matrix44f_c Transform::Model()
 {
-	cml::matrix44f_c worldrot = cml::identity<4>();
-	cml::matrix_rotation_euler( worldrot, rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
-	return world * worldrot;
+	return worldFinal;
 }

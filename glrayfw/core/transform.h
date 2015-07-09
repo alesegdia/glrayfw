@@ -18,6 +18,7 @@ public:
 	cml::vector3f local_position;
 	cml::vector3f local_rotation;
 	cml::matrix44f_c world;
+	cml::matrix44f_c worldFinal;
 	cml::matrix44f_c local;
 	Entity* entity;
 
