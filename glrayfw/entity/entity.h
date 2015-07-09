@@ -22,7 +22,7 @@ public:
 protected:
 
 	Sprite3D* sprite;
-	b2Body* body;
+	b2Body* body = NULL;
 
 	bool isAlive;
 	Entity::Type type;
@@ -55,7 +55,9 @@ public:
 
 	void ClearVelocity()
 	{
-		body->SetLinearVelocity(b2Vec2(0,0));
+		if( body ) {
+			body->SetLinearVelocity(b2Vec2(0,0));
+		}
 	}
 
 	void SetController( EntityController* controller );
@@ -86,7 +88,9 @@ public:
 
 	void Cleanup()
 	{
-		body->GetWorld()->DestroyBody( body );
+		if( body ) {
+			body->GetWorld()->DestroyBody( body );
+		}
 	}
 
 	void Die()
@@ -163,8 +167,10 @@ public:
 
 	void PhysicStep()
 	{
-		transform.position[0] = -this->body->GetPosition().x;
-		transform.position[2] = -this->body->GetPosition().y;
+		if( this->body ) {
+			transform.position[0] = -this->body->GetPosition().x;
+			transform.position[2] = -this->body->GetPosition().y;
+		}
 	}
 
 	Sprite3D* GetSprite()
