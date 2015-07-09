@@ -32,6 +32,11 @@ public:
 
 	Transform transform;
 	EntityController* controller;
+	int framex, framey;
+
+	virtual void SetupFrame( const cml::vector3f& viewerPos ) {
+		framex = 0; framey = 0;
+	}
 
 	virtual ~Entity();
 
