@@ -6,21 +6,21 @@ void Transform::Update(const Transform& parent, uint32_t delta)
 {
 	cml::matrix44f_c worldtrans,
 					 localrot,
-					 localtrans,
-					 worldrot;
+					 invrot,
+					 localtrans;
 
-	worldtrans = localrot = localtrans = worldrot = worldtrans = cml::identity<4>();
+	worldtrans = localrot = localtrans = invrot = worldtrans = cml::identity<4>();
 
 	cml::vector3f loc = local_position;
 
 	cml::matrix_rotation_euler( localrot, local_rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
-	cml::matrix_rotation_euler( worldrot, rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
+	cml::matrix_rotation_euler( invrot, -local_rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
 	// cml::matrix_rotation_euler( worldrot2, -rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
 
 	cml::matrix_set_translation( localtrans, local_position );
 	cml::matrix_set_translation( worldtrans, position );
 
-	world = parent.world * worldtrans * localrot * localtrans * worldrot;
+	world = parent.world * worldtrans * localrot * localtrans * invrot;
 	if( this->entity )
 		this->entity->Step( delta );
 
@@ -64,5 +64,7 @@ void Transform::AddChild(Transform* child)
 
 cml::matrix44f_c Transform::Model()
 {
-	return world;
+	cml::matrix44f_c worldrot = cml::identity<4>();
+	cml::matrix_rotation_euler( worldrot, rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
+	return world * worldrot;
 }
