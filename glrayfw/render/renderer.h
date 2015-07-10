@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <glrayfw/render/sdlcontext.h>
+#include "../render/sdlcontext.h"
 
 #include <cml/cml.h>
 #include "context.h"
@@ -13,10 +13,10 @@
 #include "../entity/entity.h"
 #include "plane.h"
 #include "../core/random.h"
-#include "font.h"
 #include "../entity/pawn.h"
 #include "../map/map.h"
 #include "camera.h"
+#include "font.h"
 
 
 class Renderer
