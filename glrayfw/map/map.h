@@ -5,8 +5,8 @@
 #include <vector>
 #include <cml/cml.h>
 
-#include <glrayfw/core/matrix2d.h>
-#include <glrayfw/core/dynamicarray.h>
+#include "../core/matrix2d.h"
+#include "../core/dynamicarray.h"
 
 class Map
 {

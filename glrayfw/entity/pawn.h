@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <glrayfw/entity/entity.h>
+#include "entity.h"
 
 class Pawn : public Entity
 {
