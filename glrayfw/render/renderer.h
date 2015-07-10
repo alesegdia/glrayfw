@@ -47,6 +47,7 @@ private:
 	GLuint fontvao, fontvbo;
 	int ww, wh;
 	Camera* cam;
+	Plane plane;
 
 public:
 
@@ -124,6 +125,7 @@ public:
 
 		AllocPostQuad();
 
+		plane.Prepare(gl,300,300,4,4);
 
 	}
 
@@ -343,11 +345,27 @@ public:
 		RenderClear();
 	}
 
+	void RenderFloor( tdogl::Texture* t ) {
+		RenderBigPlane( t, 2.f, 0.f, 90.f );
+	}
+
+	void RenderRoof( tdogl::Texture* t ) {
+		RenderBigPlane( t, -2.f, 300.f, -90.f );
+	}
+
+	void RenderBigPlane( tdogl::Texture* t, float y, float z, float rotation ) {
+		cml::matrix44f_c model = cml::identity<4>();
+		cml::matrix_rotation_world_x( model, cml::rad(rotation) );
+		cml::matrix_set_translation( model, 0.f, y, z );
+		RenderPlane( &plane, model, t );
+	}
+
 	void Dispose()
 	{
 		quadprog.Dispose( gl );
 		blockprog.Dispose( gl );
 		block.Dispose( gl );
+		plane.Dispose(gl);
 		gl->DeleteBuffers(1,&postvbo);
 		FT_Done_FreeType( ftlib );
 	}
