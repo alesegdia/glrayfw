@@ -38,7 +38,7 @@ int SDLGLApp::Exec(int argc, char** argv)
 	Setup(argc,argv);
 
 	SDL_Event event;
-	const int TIME_STEP = 10;
+	const int TIME_STEP = 30;
 	int currtime = SDL_GetTicks();
 	int delta, accum;
 	accum = TIME_STEP;
@@ -78,7 +78,6 @@ int SDLGLApp::Exec(int argc, char** argv)
 		} else {
 			//SDL_Delay(accum);
 		}
-		printf("ACCUM!%d\n", accum);
 	}
 
 	Cleanup();
