@@ -16,6 +16,7 @@ bool Context::MakeCurrent()
     GetProc( BufferData, "glBufferData" ) &&
     GetProc( PixelStorei, "glPixelStorei" ) &&
     GetProc( VertexAttribPointer, "glVertexAttribPointer" ) &&
+    GetProc( GetError, "glGetError" ) &&
     GetProc( EnableVertexAttribArray, "glEnableVertexAttribArray" ) &&
     GetProc( CreateShader, "glCreateShader" ) &&
     GetProc( CreateProgram, "glCreateProgram" ) &&
