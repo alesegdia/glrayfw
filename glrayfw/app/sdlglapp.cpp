@@ -38,7 +38,7 @@ int SDLGLApp::Exec(int argc, char** argv)
 	Setup(argc,argv);
 
 	SDL_Event event;
-	const int TIME_STEP = 20;
+	const int TIME_STEP = 10;
 	int currtime = SDL_GetTicks();
 	int delta, accum;
 	accum = TIME_STEP;
@@ -50,8 +50,8 @@ int SDLGLApp::Exec(int argc, char** argv)
 		currtime = SDL_GetTicks();
 		fpsc.Tick(currtime);
 		delta = (currtime - prevtime);
-		int accum_ = accum;
-		accum -= delta;
+		delta += accum;
+		accum = 0;
 
 		if( fpsc.GetFPS() != prevfps )
 		{
@@ -65,13 +65,20 @@ int SDLGLApp::Exec(int argc, char** argv)
 			HandleEvent(event);
 		}
 
-		if(accum <= 0) {
-			Update(delta); // FIXED TIMESTEP
-			accum = TIME_STEP-accum;
-			Render();
+		int i = 0;
+		while( delta >= TIME_STEP ) {
+			i++;
+			Update(TIME_STEP);
+			delta -= TIME_STEP;
+		}
+		Render();
+		if(delta < TIME_STEP) {
+			//Update(delta); // FIXED TIMESTEP
+			accum = TIME_STEP-delta;
 		} else {
 			//SDL_Delay(accum);
 		}
+		printf("ACCUM!%d\n", accum);
 	}
 
 	Cleanup();
