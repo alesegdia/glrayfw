@@ -257,7 +257,7 @@ public:
 		cml::vector2f f = sprite->CurrentFrame();
 		cml::vector2f s = sprite->FrameSize();
 		gl->BindVertexArray( sprite->GetQuad().GetVAO() );
-			gl->UniformMatrix4fv( gl->GetUniformLocation( quadprog.Object(), "model" ), 1, false, model.data() );//sprite.GetModel().data() );
+			gl->UniformMatrix4fv( gl->GetUniformLocation( quadprog.Object(), "model" ), 1, false, model.data() );
 			gl->Uniform2f( gl->GetUniformLocation( quadprog.Object(), "frame" ), f[0], f[1] );
 			gl->Uniform2f( gl->GetUniformLocation( quadprog.Object(), "size" ), s[0], s[1] );
 			gl->ActiveTexture( GL_TEXTURE0 );

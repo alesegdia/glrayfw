@@ -40,7 +40,6 @@ public:
 		size[0] = 1.f/((float)frames_x);
 		size[1] = 1.f/((float)frames_y);
 		this->tex = tex;
-		//this->position = pos;
 		quad.Prepare( gl, 2.f, 2.f, size[0], size[1]);
 	}
 
