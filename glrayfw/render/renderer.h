@@ -59,6 +59,7 @@ public:
 		this->cam = cam;
 
 		fontprog.Prepare( gl, "assets/vs_font.vert", "assets/fs_font.frag" );
+		fontprog.Compile(gl);
 		attribute_coord = gl->GetAttribLocation( fontprog.Object(), "coord" );
 		uniform_tex = gl->GetUniformLocation( fontprog.Object(), "tex" );
 		uniform_color = gl->GetUniformLocation( fontprog.Object(), "color" );
@@ -83,6 +84,10 @@ public:
 		quadprog.BindAttribLocation( gl, tex_loc, "in_TexCoord" );
 		quadprog.BindAttribLocation( gl, pos_loc, "in_Position" );
 
+		blockprog.Compile(gl);
+		quadprog.Compile(gl);
+		planeprog.Compile(gl);
+		postprog.Compile(gl);
 		block.Prepare( gl );
 
 		gl->Enable(GL_CULL_FACE);

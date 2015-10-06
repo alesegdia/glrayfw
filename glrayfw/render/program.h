@@ -23,7 +23,8 @@ public:
 	{
 		vert.LoadFromFile( gl, vs_path, Shader::VERTEX );
 		frag.LoadFromFile( gl, fs_path, Shader::FRAGMENT );
-		Compile( gl );
+		//Compile( gl );
+		handle = gl->CreateProgram();
 
 	}
 
@@ -53,7 +54,6 @@ public:
 
 	void Compile( Render::Context* gl )
 	{
-		handle = gl->CreateProgram();
 		gl->AttachShader( handle, vert.Object() );
 		gl->AttachShader( handle, frag.Object() );
 		gl->LinkProgram( handle );
