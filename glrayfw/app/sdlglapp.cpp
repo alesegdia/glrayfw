@@ -38,10 +38,9 @@ int SDLGLApp::Exec(int argc, char** argv)
 	Setup(argc,argv);
 
 	SDL_Event event;
-	const int TIME_STEP = 30;
+	const int TIME_STEP = 20;
 	int currtime = SDL_GetTicks();
-	int delta, accum;
-	accum = TIME_STEP;
+	int delta;
 
 	FPSCounter<Uint32> fpsc;
 	Uint32 prevfps = 0;
@@ -49,10 +48,7 @@ int SDLGLApp::Exec(int argc, char** argv)
 		int prevtime = currtime;
 		currtime = SDL_GetTicks();
 		fpsc.Tick(currtime);
-		delta = (currtime - prevtime);
-		delta += accum;
-		accum = 0;
-
+		delta += (currtime - prevtime);
 		if( fpsc.GetFPS() != prevfps )
 		{
 			prevfps = fpsc.GetFPS();
@@ -66,18 +62,16 @@ int SDLGLApp::Exec(int argc, char** argv)
 		}
 
 		int i = 0;
+		bool was_updated;
+		std::cout << "loop\n";
 		while( delta >= TIME_STEP ) {
+			was_updated = true;
+			std::cout << "LOGIC!\n";
 			i++;
 			Update(TIME_STEP);
 			delta -= TIME_STEP;
 		}
-		Render();
-		if(delta < TIME_STEP) {
-			//Update(delta); // FIXED TIMESTEP
-			accum = TIME_STEP-delta;
-		} else {
-			//SDL_Delay(accum);
-		}
+		if( was_updated ) Render();
 	}
 
 	Cleanup();
