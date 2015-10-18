@@ -33,7 +33,7 @@ int SDLGLApp::Exec(int argc, char** argv)
 	mainGLContext = SDL_GL_CreateContext(mainWindow);
 	gl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
 	gl->MakeCurrent( mainWindow );
-	//SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(0);
 
 	Setup(argc,argv);
 
@@ -63,10 +63,8 @@ int SDLGLApp::Exec(int argc, char** argv)
 
 		int i = 0;
 		bool was_updated;
-		std::cout << "loop\n";
 		while( delta >= TIME_STEP ) {
 			was_updated = true;
-			std::cout << "LOGIC!\n";
 			i++;
 			Update(TIME_STEP);
 			delta -= TIME_STEP;
