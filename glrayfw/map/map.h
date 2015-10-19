@@ -34,7 +34,8 @@ private:
 	};
 
 	Matrix2D<int> map_data;
-	DynamicArray<cml::matrix44f_c> model_list;
+	bool modelsBufferGenerated = false;
+	DynamicArray<cml::matrix44f_c> models_list[3];
 
 
 public:
@@ -126,54 +127,35 @@ public:
 
 	void GenerateModels( int block_type = 1 )
 	{
-		model_list.Clear();
+		models_list[block_type-1].Clear();
 		for( int i = 0; i < map_data.Rows(); i++ )
 		{
 			for( int j = 0; j < map_data.Cols(); j++ )
 			{
 				if( !IsFree( j, i ) && Get( j, i ) == block_type )
 				{
-					model_list.Add( cml::identity<4>() );
-					cml::matrix_translation( model_list.Back(), cml::vector3f( j*2, 0, i*2 ) );
+					models_list[block_type-1].Add( cml::identity<4>() );
+					cml::matrix_translation( models_list[block_type-1].Back(), cml::vector3f( j*2, 0, i*2 ) );
 				}
 			}
 		}
 	}
 
-	cml::matrix44f_c* GetModelsBuffer()
+	cml::matrix44f_c* GetModelsBuffer( int num )
 	{
-		return model_list.GetRawData();
-	}
-
-	bool CanMove( float x, float y, float blocksize = 2.f )
-	{
-		 x = floor( x / blocksize );
-		 y = floor( y / blocksize );
-		return IsFree( y, x );
-	}
-
-	void PrintModels()
-	{
-		for( int i = 0; i < model_list.Size(); i++ )
+		if( !modelsBufferGenerated )
 		{
-			cml::matrix44f_c m = model_list[i];
-			for( int j = 0; j < 4; j++ )
-			{
-				for( int k = 0; k < 4; k++ )
-				{
-					printf("%f ", m( j, k ));
-				}
-				printf("\n");
-			}
-
-				printf("\n");
-				printf("\n");
+			GenerateModels(1);
+			GenerateModels(2);
+			GenerateModels(3);
+			modelsBufferGenerated = true;
 		}
+		return models_list[num-1].GetRawData();
 	}
 
-	int GetModelsNum()
+	int GetModelsNum(int num)
 	{
-		return model_list.Size();
+		return models_list[num-1].Size();
 	}
 
 };

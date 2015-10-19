@@ -320,11 +320,10 @@ public:
 		gl->ActiveTexture(GL_TEXTURE0);
 		gl->BindTexture(GL_TEXTURE_2D, tex->object());
 		gl->Uniform1i( gl->GetUniformLocation( shaderprogram, "tex" ), 0 );
-		map.GenerateModels(num);
-		GLvoid* cpu_model_buffer = ( (GLvoid*) map.GetModelsBuffer() );
+		GLvoid* cpu_model_buffer = ( (GLvoid*) map.GetModelsBuffer(num) );
 		gl->BindBuffer(GL_ARRAY_BUFFER, block.GetVBO(1));
-		gl->BufferData( GL_ARRAY_BUFFER, sizeof(cml::matrix44f_c) * map.GetModelsNum(), cpu_model_buffer, GL_STATIC_DRAW);
-		gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), map.GetModelsNum() );
+		gl->BufferData( GL_ARRAY_BUFFER, sizeof(cml::matrix44f_c) * map.GetModelsNum(num), cpu_model_buffer, GL_STATIC_DRAW);
+		gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), map.GetModelsNum(num) );
 	}
 
 
