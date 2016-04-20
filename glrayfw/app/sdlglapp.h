@@ -18,11 +18,11 @@ protected:
 
 	uint32_t sdlwinflags;
 
-	virtual void Setup(int argc, char** argv);
-	virtual void Update(uint32_t delta);
-	virtual void Render();
-	virtual void Cleanup();
-	virtual void HandleEvent(SDL_Event& event);
+	virtual void Setup(int argc, char** argv) = 0 ;
+	virtual void Update(uint32_t delta) = 0 ;
+	virtual void Render() = 0 ;
+	virtual void Cleanup() = 0 ;
+	virtual void HandleEvent(SDL_Event& event) = 0 ;
 
 	void Stop()
 	{ running=false; }

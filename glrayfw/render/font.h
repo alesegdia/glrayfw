@@ -1,7 +1,7 @@
 
 #pragma once
 
-//#include <freetype2/config/ftheader.h>
+#include <freetype2/config/ftheader.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "program.h"
@@ -90,7 +90,7 @@ public:
 		} coords[6 * strlen(text)];
 
 		int n = 0;
-		for(const char *p = text; *p; p++) {
+		for(const unsigned char *p = ((const unsigned char*)text); *p; p++) {
 			float x2 =  x + c[*p].bl * sx;
 			float y2 = -y - c[*p].bt * sy;
 			float w = c[*p].bw * sx;
@@ -108,8 +108,7 @@ public:
 
 			float cpbh = c[*p].bh;
 			float cptx = c[*p].tx, cpbw = c[*p].bw;
-			coords[n++] = (point) {
-				x2 + w, -y2, c[*p].tx + c[*p].bw / this->w, 0};
+			coords[n++] = (point) {	x2 + w, -y2, c[*p].tx + c[*p].bw / this->w, 0 };
 			coords[n++] = (point) {
 				x2, -y2, c[*p].tx, 0};
 			coords[n++] = (point) {

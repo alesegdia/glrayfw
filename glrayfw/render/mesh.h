@@ -69,6 +69,7 @@ public:
 		{
 		case AttribConfig::XYZUV_INST: ConfigXYZUV_INST( gl ); break;
 		case AttribConfig::XY_UV: ConfigXY_UV( gl ); break;
+		default: break;
 		}
 	}
 
@@ -76,7 +77,6 @@ public:
 	{
 		GLuint pos_loc = 0;
 		GLuint tex_loc = 1;
-		GLuint model_loc = 2;
 
 		gl->GenVertexArrays( 1, &vao );
 		gl->BindVertexArray( vao );
@@ -187,6 +187,8 @@ protected:
 			numvbo = 2;
 			uvs = new GLfloat[num * 2];
 			vbo = new GLuint[numvbo];
+			break;
+		default:
 			break;
 		}
 	}

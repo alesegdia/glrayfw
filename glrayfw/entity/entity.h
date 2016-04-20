@@ -55,6 +55,7 @@ public:
 			case Type::MOB: return "MOB";
 			case Type::PLAYER: return "PLAYER";
 			case Type::BULLET: return "BULLET";
+		default: return nullptr;
 		}
 	}
 
@@ -79,16 +80,14 @@ public:
 		return type;
 	}
 
-	void CollisionEnter( Entity* other )
+	virtual void CollisionEnter( Entity* other )
 	{
-		//printf("%p (%s): START COLLISION WITH %p (%s)\n", this, TypeString(), other, other->TypeString());
-		//fflush(0);
+
 	}
 
-	void CollisionExit( Entity* other )
+	virtual void CollisionExit( Entity* other )
 	{
-		//printf("%p (%s): END COLLISION WITH %p (%s)\n", this, TypeString(), other, other->TypeString());
-		//fflush(0);
+
 	}
 
 	void Cleanup()

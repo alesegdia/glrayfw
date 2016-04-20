@@ -40,10 +40,10 @@ int SDLGLApp::Exec(int argc, char** argv)
 	SDL_Event event;
 	const int TIME_STEP = 20;
 	int currtime = SDL_GetTicks();
-	int delta;
+	int delta = 0 ;
 
-	FPSCounter<Uint32> fpsc;
-	Uint32 prevfps = 0;
+	FPSCounter<int> fpsc;
+	int prevfps = 0;
 	while(running) {
 		int prevtime = currtime;
 		currtime = SDL_GetTicks();
@@ -82,27 +82,3 @@ int SDLGLApp::Exec(int argc, char** argv)
 }
 
 
-void SDLGLApp::Setup(int argc, char** argv)
-{
-
-}
-
-void SDLGLApp::Update(uint32_t delta)
-{
-
-}
-
-void SDLGLApp::Render()
-{
-
-}
-
-void SDLGLApp::HandleEvent(SDL_Event& event)
-{
-
-}
-
-void SDLGLApp::Cleanup()
-{
-
-}
