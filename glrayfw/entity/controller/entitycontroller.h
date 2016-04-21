@@ -14,6 +14,6 @@ protected:
 public:
 
 	virtual ~EntityController() {}
-	virtual void Step( Entity* e, uint32_t delta ) {}
+	virtual void Step( Entity* e, uint32_t delta ) = 0 ;
 
 };

@@ -2,13 +2,13 @@
 #include "camera.h"
 
 Camera::Camera() :
-	position( 0.f, 0.f, -1.f ),
-	horizontalAngle( 0.f ),
-	verticalAngle( 0.f ),
 	fieldOfView( cml::rad(60.f) ),
+	aspect( 4.f / 3.f ),
 	nearClip( 0.01f ),
 	farClip( 100.f ),
-	aspect( 4.f / 3.f )
+	position( 0.f, 0.f, -1.f ),
+	horizontalAngle( 0.f ),
+	verticalAngle( 0.f )
 {
 	ComputeProjection();
 }

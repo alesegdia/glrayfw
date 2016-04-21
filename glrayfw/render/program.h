@@ -37,7 +37,7 @@ public:
 	void Dispose( Render::Context* gl )
 	{
 		gl->UseProgram(0);
-		for( int i = 0; i < locations.Size(); i++ ) gl->DisableVertexAttribArray( locations[i] );
+		for( size_t i = 0; i < locations.Size(); i++ ) gl->DisableVertexAttribArray( locations[i] );
 		gl->DetachShader( handle, frag.Object() );
 		gl->DetachShader( handle, vert.Object() );
 		gl->DeleteShader( frag.Object() );

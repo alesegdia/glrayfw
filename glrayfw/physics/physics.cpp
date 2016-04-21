@@ -39,7 +39,7 @@ b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, ui
 	fixtureDef.isSensor = true;
 	fixtureDef.filter.categoryBits = category;
 	fixtureDef.filter.maskBits = mask;
-	b2Fixture* fixture = body->CreateFixture( &fixtureDef );
+	body->CreateFixture( &fixtureDef );
 
 	body->SetGravityScale(0);
 
@@ -65,7 +65,7 @@ b2Body* Physics::CreateSphereBody( float x, float y, CollisionLayer category, ui
 	fixtureDef.density = 1.f;
 	fixtureDef.filter.categoryBits = category;
 	fixtureDef.filter.maskBits = mask;
-	b2Fixture* fixture = body->CreateFixture( &fixtureDef );
+	body->CreateFixture( &fixtureDef );
 
 	body->SetGravityScale(0);
 
@@ -90,7 +90,7 @@ void Physics::AddCubeBody( float x, float y )
 	fixtureDef.density = 1.f;
 	fixtureDef.filter.categoryBits = CollisionLayer::MAP;
 	fixtureDef.filter.maskBits = CollisionLayer::ALLY_BULLET | CollisionLayer::ENEMY | CollisionLayer::ENEMY_BULLET | CollisionLayer::PLAYER;
-	b2Fixture* fixture = body->CreateFixture( &fixtureDef );
+	body->CreateFixture( &fixtureDef );
 
 }
 
@@ -103,7 +103,7 @@ class MyQueryCallback : public b2QueryCallback
 {
 	public:
 		static int numbodies;
-		bool ReportFixture(b2Fixture* fixture)
+		bool ReportFixture(b2Fixture*)
 		{
 			numbodies++;
 			return true;

@@ -160,6 +160,7 @@ public:
 	}
 	void AllocPostQuad()
 	{
+		/*
 		GLfloat quadVertices[] = {
 			-1.0f,  1.0f,  0.0f, 1.0f,
 			1.0f,  1.0f,  1.0f, 1.0f,
@@ -169,6 +170,7 @@ public:
 			-1.0f, -1.0f,  0.0f, 0.0f,
 			-1.0f,  1.0f,  0.0f, 1.0f
 		};
+		*/
 
 		GLfloat postdata[] = {
 			-1.f, -1.f, 	0.f, 0.f,
@@ -278,7 +280,7 @@ public:
 		gl->UseProgram( quadprog.Object() );
 		Sprite3D* sprite = ent->GetSprite();
 		sprite->SetCurrentFrame(ent->framex, ent->framey);
-		cml::vector2f f = sprite->CurrentFrame();
+		//cml::vector2f f = sprite->CurrentFrame();
 		RenderSprite3D( sprite, ent->Model() );
 	}
 

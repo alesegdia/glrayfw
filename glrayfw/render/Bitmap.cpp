@@ -153,7 +153,7 @@ static FormatConverterFunc ConverterFuncForFormats(Bitmap::Format srcFormat, Bit
  * Misc funcs
  */
 
-inline unsigned GetPixelOffset(unsigned col, unsigned row, unsigned width, unsigned height, Bitmap::Format format) {
+inline unsigned GetPixelOffset(unsigned col, unsigned row, unsigned width, unsigned , Bitmap::Format format) {
     return (row*width + col)*format;
 }
 
@@ -228,7 +228,7 @@ unsigned char* Bitmap::getPixel(unsigned int column, unsigned int row) const {
     if(column >= _width || row >= _height)
         throw std::runtime_error("Pixel coordinate out of bounds");
     
-    return _pixels + GetPixelOffset(column, row, _width, _height, _format);
+	return _pixels + GetPixelOffset(column, row, _width, _height, _format);
 }
 
 void Bitmap::setPixel(unsigned int column, unsigned int row, const unsigned char* pixel) {
@@ -242,8 +242,8 @@ void Bitmap::flipVertically() {
     unsigned halfRows = _height / 2;
     
     for(unsigned rowIdx = 0; rowIdx < halfRows; ++rowIdx){
-        unsigned char* row = _pixels + GetPixelOffset(0, rowIdx, _width, _height, _format);
-        unsigned char* oppositeRow = _pixels + GetPixelOffset(0, _height - rowIdx - 1, _width, _height, _format);
+		unsigned char* row = _pixels + GetPixelOffset(0, rowIdx, _width, _height, _format);
+		unsigned char* oppositeRow = _pixels + GetPixelOffset(0, _height - rowIdx - 1, _width, _height, _format);
         
         memcpy(rowBuffer, row, rowSize);
         memcpy(row, oppositeRow, rowSize);
@@ -258,8 +258,8 @@ void Bitmap::rotate90CounterClockwise() {
     
     for(unsigned row = 0; row < _height; ++row){
         for(unsigned col = 0; col < _width; ++col){
-            unsigned srcOffset = GetPixelOffset(col, row, _width, _height, _format);
-            unsigned destOffset = GetPixelOffset(row, _width - col - 1, _height, _width, _format);
+			unsigned srcOffset = GetPixelOffset(col, row, _width, _height, _format);
+			unsigned destOffset = GetPixelOffset(row, _width - col - 1, _height, _width, _format);
             memcpy(newPixels + destOffset, _pixels + srcOffset, _format); //copy one pixel
         }
     }

@@ -34,7 +34,7 @@ public:
 	EntityController* controller;
 	int framex, framey;
 
-	virtual void SetupFrame( const cml::vector3f& viewerPos ) {
+	virtual void SetupFrame( const cml::vector3f& /* viewerPos */ ) {
 		framex = 0; framey = 0;
 	}
 
@@ -80,12 +80,12 @@ public:
 		return type;
 	}
 
-	virtual void CollisionEnter( Entity* other )
+	virtual void CollisionEnter( Entity* )
 	{
 
 	}
 
-	virtual void CollisionExit( Entity* other )
+	virtual void CollisionExit( Entity* )
 	{
 
 	}

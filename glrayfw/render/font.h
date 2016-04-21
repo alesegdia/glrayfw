@@ -107,18 +107,19 @@ public:
 			}
 
 			float cpbh = c[*p].bh;
-			float cptx = c[*p].tx, cpbw = c[*p].bw;
-			coords[n++] = (point) {	x2 + w, -y2, c[*p].tx + c[*p].bw / this->w, 0 };
+			float cptx = c[*p].tx;
+			float cpbw = c[*p].bw;
+			coords[n++] = (point) {	x2 + w, -y2, cptx + c[*p].bw / this->w, 0 };
 			coords[n++] = (point) {
-				x2, -y2, c[*p].tx, 0};
+				x2, -y2, cptx, 0};
 			coords[n++] = (point) {
-				x2, -y2 - h, c[*p].tx, cpbh/this->h};
+				x2, -y2 - h, cptx, cpbh/this->h};
 			coords[n++] = (point) {
-				x2 + w, -y2, c[*p].tx + c[*p].bw / this->w , 0};
+				x2 + w, -y2, cptx + cpbw / this->w , 0};
 			coords[n++] = (point) {
-				x2, -y2 - h, c[*p].tx, cpbh/this->h};
+				x2, -y2 - h, cptx, cpbh/this->h};
 			coords[n++] = (point) {
-				x2 + w, -y2 - h, c[*p].tx + c[*p].bw / this->w , cpbh/this->h};
+				x2 + w, -y2 - h, cptx + cpbw / this->w , cpbh/this->h};
 
 		}
 		gl->BufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);

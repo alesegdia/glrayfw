@@ -11,7 +11,7 @@ void Transform::Update(const Transform& parent, uint32_t delta)
 
 	worldtrans = localrot = localtrans = invrot = worldtrans = cml::identity<4>();
 
-	cml::vector3f loc = local_position;
+	// cml::vector3f loc = local_position;
 
 	cml::matrix_rotation_euler( localrot, local_rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
 	cml::matrix_rotation_euler( invrot, -local_rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );

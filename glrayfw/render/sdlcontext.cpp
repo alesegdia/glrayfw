@@ -21,7 +21,7 @@ void Context::GetVersion(uint8_t &major, uint8_t &minor, Render::Context::Profil
   SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &value);	major = value;
   SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &value);	minor = value;
   SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &value);
-  if (major == 3 && minor >= 1 || major > 3)
+  if ( (major == 3 && minor >= 1) || major > 3)
     profile = SDL_GL_ExtensionSupported("GL_ARB_compatibility")?Profile::Compatibility:Profile::Core;
   else
     profile = Profile::Compatibility;
