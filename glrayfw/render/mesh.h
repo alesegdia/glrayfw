@@ -84,13 +84,13 @@ public:
 		gl->GenBuffers( numvbo, vbo );
 
 		gl->BindBuffer( GL_ARRAY_BUFFER, vbo[0] );
-		UploadBufferData( gl, vbo[0], 2, &vertices[0] );
+		UploadBufferData( gl, 2, &vertices[0] );
 		ConfigAttrib( gl, pos_loc, 2 );
 
 	 	gl->BindBuffer( GL_ARRAY_BUFFER, 0 );
 
 		gl->BindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-		UploadBufferData( gl, vbo[1], 2, &uvs[0] );
+		UploadBufferData( gl, 2, &uvs[0] );
 	 	ConfigAttrib( gl, tex_loc, 2 );
 
 	 	gl->BindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -112,7 +112,7 @@ public:
 		gl->GenBuffers( numvbo, vbo );
 
 		gl->BindBuffer( GL_ARRAY_BUFFER, vbo[0] );
-		UploadBufferData( gl, vbo[0], 5, &vertices[0] );
+		UploadBufferData( gl, 5, &vertices[0] );
 
 		ConfigAttrib( gl, pos_loc, 3, 5 );
 		ConfigAttrib( gl, tex_loc, 2, 5, 3 );
@@ -153,7 +153,7 @@ public:
 		}
 	}
 
-	void UploadBufferData( Render::Context* gl, GLuint vbo, int items_per_attr, GLfloat* buffer )
+	void UploadBufferData( Render::Context* gl, int items_per_attr, GLfloat* buffer )
 	{
 		gl->BufferData( GL_ARRAY_BUFFER, sizeof(GLfloat) * items_per_attr * numElements, buffer, GL_STATIC_DRAW );
 	}

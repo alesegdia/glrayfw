@@ -18,8 +18,8 @@ public:
 
 		FT_GlyphSlot g = face->glyph;
 		w = h = 0;
-		int roww = 0;
-		int rowh = 0;
+		unsigned int roww = 0;
+		unsigned int rowh = 0;
 		for( int i = 32; i < 128; i++ )
 		{
 			if(FT_Load_Char(face, i, FT_LOAD_RENDER)) {
@@ -71,7 +71,7 @@ public:
 			c[i].tx = (float)ox / (float)w;
 			c[i].ty = 0;
 
-			rowh = std::max( rowh, (int) g->bitmap.rows );
+			rowh = std::max( rowh, g->bitmap.rows );
 			ox += g->bitmap.width+1;
 		}
 

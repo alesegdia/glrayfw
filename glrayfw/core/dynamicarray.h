@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <cassert>
 
 template <typename T>
 class DynamicArray
@@ -57,10 +58,8 @@ public:
 
 	T& Back()
 	{
-		if( !IsEmpty() )
-		{
-			return data[size-1];
-		}
+		assert(!IsEmpty());
+		return data[size-1];
 	}
 
 	T& operator[]( size_t index )
