@@ -7,13 +7,26 @@
 #include "program.h"
 #include "context.h"
 
+#include <algorithm>
+
 class Font {
 public:
 
+	static FT_Library ftlib;
 
-	void Prepare( Render::Context* gl, FT_Library& ft, const char* path, int height=48 )
+	static void Initialize()
 	{
-		if(FT_New_Face(ft, path, 0, &face)) fprintf(stderr, "Could not open font\n");
+		if( FT_Init_FreeType(&ftlib) ) printf("couldnt init freetype\n");
+	}
+
+	static void Dispose()
+	{
+		FT_Done_FreeType(ftlib);
+	}
+
+	void Prepare( Render::Context* gl, const char* path, int height=48 )
+	{
+		if(FT_New_Face(ftlib, path, 0, &face)) fprintf(stderr, "Could not open font\n");
 		SetSize(height);
 
 		FT_GlyphSlot g = face->glyph;

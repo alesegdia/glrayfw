@@ -47,7 +47,8 @@ SOURCES += \
     $$PWD/glrayfw/render/context.cpp \
     $$PWD/glrayfw/render/sdlcontext.cpp \
     $$PWD/glrayfw/render/shader.cpp \
-    $$PWD/glrayfw/render/Texture.cpp
+    $$PWD/glrayfw/render/Texture.cpp \
+    $$PWD/glrayfw/render/font.cpp
 
 INCLUDEPATH += $$PWD \
 				/usr/include/freetype2

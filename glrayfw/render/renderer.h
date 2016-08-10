@@ -41,13 +41,12 @@ private:
 
 	Block block;
 
-	Font default_font;
-	FT_Library ftlib;
 	GLuint attribute_coord, uniform_tex, uniform_color;
 	GLuint fontvao, fontvbo;
 	int ww, wh;
 	Camera* cam;
 	Plane plane;
+	Font default_font;
 
 public:
 
@@ -63,10 +62,11 @@ public:
 		attribute_coord = gl->GetAttribLocation( fontprog.Object(), "coord" );
 		uniform_tex = gl->GetUniformLocation( fontprog.Object(), "tex" );
 		uniform_color = gl->GetUniformLocation( fontprog.Object(), "color" );
+		Font::Initialize();
+		default_font.Prepare( gl, "assets/mine.ttf", 96 );
+
 		gl->GenVertexArrays(1, &fontvao);
 		gl->GenBuffers(1, &fontvbo);
-		if( FT_Init_FreeType(&ftlib) ) printf("couldnt init freetype\n");
-		default_font.Prepare( gl, ftlib, "assets/mine.ttf", 96 );
 
 		blockprog.Prepare( gl, "assets/vs_mvptex_inst.vert", "assets/fs_mvptex_inst.frag" );
 		quadprog.Prepare( gl, "assets/vs_quadanim.vert", "assets/fs_quadanim.frag" );
@@ -373,7 +373,7 @@ public:
 		block.Dispose( gl );
 		plane.Dispose(gl);
 		gl->DeleteBuffers(1,&postvbo);
-		FT_Done_FreeType( ftlib );
+		Font::Dispose();
 	}
 
 };

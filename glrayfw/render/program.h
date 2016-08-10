@@ -6,6 +6,7 @@
 #pragma once
 #include "context.h"
 #include "shader.h"
+#include "../core/dynamicarray.h"
 class Program
 {
 
