@@ -2,100 +2,104 @@
 #include "camera.h"
 
 Camera::Camera() :
-	fieldOfView( cml::rad(60.f) ),
-	aspect( 4.f / 3.f ),
-	nearClip( 0.01f ),
-	farClip( 100.f ),
-	position( 0.f, 0.f, -1.f ),
-	horizontalAngle( 0.f ),
-	verticalAngle( 0.f )
+	m_fieldOfView( cml::rad(60.f) ),
+	m_aspect( 4.f / 3.f ),
+	m_nearClip( 0.01f ),
+	m_farClip( 100.f ),
+	m_position( 0.f, 0.f, -1.f ),
+	m_horizontalAngle( 0.f ),
+	m_verticalAngle( 0.f )
 {
-	ComputeProjection();
+	computeProjection();
 }
 
-void Camera::SetAspect( float a )
+void Camera::aspect( float a )
 {
-	aspect = a;
+	m_aspect = a;
 }
 
-void Camera::SetPosition( const cml::vector3f& pos )
+void Camera::position( const cml::vector3f& pos )
 {
-	position = pos;
+	m_position = pos;
 }
 
-void Camera::OffsetPosition( const cml::vector3f& offsetPosition )
+void Camera::offsetPosition( const cml::vector3f& offsetPosition )
 {
-	position += offsetPosition;
+	m_position += offsetPosition;
 }
 
-const cml::vector3f& Camera::GetPosition() const
+const cml::vector3f& Camera::position() const
 {
-	return position;
+	return m_position;
 }
 
-void Camera::OffsetAngle( float hor, float ver )
+void Camera::offsetAngle( float hor, float ver )
 {
-	horizontalAngle += hor;
-	verticalAngle += ver;
+	m_horizontalAngle += hor;
+	m_verticalAngle += ver;
 }
 
-float Camera::GetHorizontalAngle() const
+float Camera::horizontalAngle() const
 {
-	return horizontalAngle;
+	return m_horizontalAngle;
 }
 
-float Camera::GetVerticalAngle() const
+float Camera::verticalAngle() const
 {
-	return verticalAngle;
+	return m_verticalAngle;
 }
 
-void Camera::ComputeProjection()
+void Camera::horizontalAngle(float angle)
 {
-	projection = cml::identity<4>();
-	cml::matrix_perspective_xfov_RH( projection, fieldOfView, aspect, nearClip, farClip, cml::ZClip::z_clip_neg_one );
+	m_horizontalAngle = angle;
 }
 
-const cml::matrix44f_c& Camera::GetProjection()
+void Camera::computeProjection()
 {
-	//ComputeProjection();
-	return projection;
+	m_projection = cml::identity<4>();
+	cml::matrix_perspective_xfov_RH( m_projection, m_fieldOfView, m_aspect, m_nearClip, m_farClip, cml::ZClip::z_clip_neg_one );
 }
 
-const cml::matrix44f_c& Camera::GetView()
+const cml::matrix44f_c& Camera::projection()
 {
-	ComputeView();
-	return view;
+	return m_projection;
 }
 
-void Camera::ComputeView()
+const cml::matrix44f_c& Camera::view()
+{
+	computeView();
+	return m_view;
+}
+
+void Camera::computeView()
 {
 	cml::matrix44f_c orientation, translation;
 	translation = cml::identity<4>();
 	orientation = cml::identity<4>();
-	cml::matrix_rotate_about_local_axis( orientation, 0, cml::rad(verticalAngle) );
-	cml::matrix_rotate_about_local_axis( orientation, 1, cml::rad(horizontalAngle) );
-	cml::matrix_set_translation( translation, position );
-	view = orientation * translation;
+	cml::matrix_rotate_about_local_axis( orientation, 0, cml::rad(m_verticalAngle) );
+	cml::matrix_rotate_about_local_axis( orientation, 1, cml::rad(m_horizontalAngle) );
+	cml::matrix_set_translation( translation, m_position );
+	m_view = orientation * translation;
 }
 
-cml::matrix44f_c Camera::Matrix()
+cml::matrix44f_c Camera::viewProjectionMatrix()
 {
-	ComputeView();
-	ComputeProjection();
-	return projection * view;
+	computeView();
+	computeProjection();
+	return m_projection * m_view;
 }
 
-cml::vector3f Camera::Forward() const
+cml::vector3f Camera::forward() const
 {
-	return cml::vector3f( view(2, 0), -view(1, 2), -view( 2, 2 ) );
+	return cml::vector3f( m_view(2, 0), -m_view(1, 2), -m_view( 2, 2 ) );
 }
 
-cml::vector3f Camera::Right() const
+cml::vector3f Camera::right() const
 {
-	return cml::vector3f( view(0, 0), -view(0, 1), -view(0, 2) );
+	return cml::vector3f( m_view(0, 0), -m_view(0, 1), -m_view(0, 2) );
 }
 
-cml::vector3f Camera::Up() const
+cml::vector3f Camera::up() const
 {
 	return cml::vector3f(0,0,0);
 }

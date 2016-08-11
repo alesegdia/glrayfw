@@ -4,46 +4,40 @@
 
 class Camera {
 public:
-
-
 	Camera();
 
-	void SetAspect( float a );
-	void SetPosition( const cml::vector3f& pos );
-	void OffsetPosition( const cml::vector3f& offsetPosition );
-	const cml::vector3f& GetPosition() const;
-	void OffsetAngle( float hor, float ver );
-	cml::matrix44f_c Matrix();
-	float GetHorizontalAngle() const;
-	float GetVerticalAngle() const;
-	void SetHorizontalAngle( float angle )
-	{
-		horizontalAngle = angle;
-	}
-	const cml::matrix44f_c& GetProjection();
-	const cml::matrix44f_c& GetView();
+	void position( const cml::vector3f& pos );
+	const cml::vector3f& position() const;
+	void offsetPosition( const cml::vector3f& offsetPosition );
 
-	cml::vector3f Forward() const;
-	cml::vector3f Right() const;
-	cml::vector3f Up() const;
+	void offsetAngle( float hor, float ver );
+	float horizontalAngle() const;
+	void horizontalAngle( float angle );
+	float verticalAngle() const;
 
+	cml::vector3f forward() const;
+	cml::vector3f right() const;
+	cml::vector3f up() const;
+
+	const cml::matrix44f_c& projection();
+	const cml::matrix44f_c& view();
+	cml::matrix44f_c viewProjectionMatrix();
+	void aspect( float a );
 
 private:
+	void computeProjection();
+	void computeView();
 
-	void ComputeProjection();
-	void ComputeView();
-
-	// Perspective controls
-	float fieldOfView;		// Field of View Angle
-	float aspect;	// aspect Ratio
-	float nearClip;	// Near clipping plane distance
-	float farClip;	// Far clipping plane distance
-	cml::matrix44f_c view, projection;
+	// Camera settings
+	cml::matrix44f_c m_view, m_projection;
+	float m_fieldOfView;
+	float m_aspect;
+	float m_nearClip;
+	float m_farClip;
 
 	// Transform
-	cml::vector3f position;
-	float horizontalAngle;
-	float verticalAngle;
-
+	cml::vector3f m_position;
+	float m_horizontalAngle;
+	float m_verticalAngle;
 };
 
