@@ -342,12 +342,12 @@ public:
 	}
 
 	void SetupRender() {
-		SetViewerPos( -cam->GetPosition() );
+		SetViewerPos( -cam->position() );
 
 		// SETUP MVP MATRICES
 		BindPostFBO();
 		gl->Enable(GL_DEPTH_TEST);
-		SetVP( cam->GetView(), cam->GetProjection() );
+		SetVP( cam->view(), cam->projection() );
 		RenderClear();
 	}
 
