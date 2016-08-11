@@ -21,12 +21,9 @@
 
 class Renderer
 {
-
 private:
 
 	const float PLAYER_VISION_RANGE = 17.f;
-	cml::matrix44f_c view;
-	cml::matrix44f_c projection;
 
 	float sprite3d_fog_range;
 	float cube_fog_range;
@@ -208,8 +205,8 @@ public:
 
 	inline void BindVP( GLuint shaderprogram )
 	{
-		gl->UniformMatrix4fv( gl->GetUniformLocation( shaderprogram, "view" ), 1, false, view.data() );
-		gl->UniformMatrix4fv( gl->GetUniformLocation( shaderprogram, "proj" ), 1, false, projection.data() );
+		gl->UniformMatrix4fv( gl->GetUniformLocation( shaderprogram, "view" ), 1, false, this->cam->view().data() );
+		gl->UniformMatrix4fv( gl->GetUniformLocation( shaderprogram, "proj" ), 1, false, this->cam->projection().data() );
 	}
 
 	inline void BindVisionRange( GLuint shaderprogram )
@@ -249,8 +246,8 @@ public:
 		BindVisionRange( shaderprogram );
 
 		gl->BindVertexArray( p->GetVAO() );
-			gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "view" ), 1, false, view.data() );
-			gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "proj" ), 1, false, projection.data() );
+		    gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "view" ), 1, false, cam->view().data() );
+			gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "proj" ), 1, false, cam->projection().data() );
 			gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "model" ), 1, false, model.data() );
 			gl->ActiveTexture( GL_TEXTURE0 );
 			gl->BindTexture( GL_TEXTURE_2D, tex->object() );
@@ -276,7 +273,7 @@ public:
 
 	void RenderEntity( Entity* ent )
 	{
-		ent->SetupFrame(viewerPos);
+		ent->SetupFrame( -cam->position());
 		gl->UseProgram( quadprog.Object() );
 		Sprite3D* sprite = ent->GetSprite();
 		sprite->SetCurrentFrame(ent->framex, ent->framey);
@@ -328,26 +325,10 @@ public:
 		gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), map.GetModelsNum(num) );
 	}
 
-
-	void SetVP( const cml::matrix44f_c& view, const cml::matrix44f_c& projection )
-	{
-		this->view = view;
-		this->projection = projection;
-	}
-
-	cml::vector3f viewerPos;
-	void SetViewerPos( const cml::vector3f& vp )
-	{
-		viewerPos = vp;
-	}
-
 	void SetupRender() {
-		SetViewerPos( -cam->position() );
-
 		// SETUP MVP MATRICES
 		BindPostFBO();
 		gl->Enable(GL_DEPTH_TEST);
-		SetVP( cam->view(), cam->projection() );
 		RenderClear();
 	}
 
