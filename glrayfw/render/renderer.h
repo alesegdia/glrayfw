@@ -199,7 +199,7 @@ public:
 	void UseCreatedFBO() { gl->BindFramebuffer( GL_FRAMEBUFFER, frameBuffer ); }
 	void RenderClear()
 	{
-		gl->ClearColor(0.0, 0.0, 0.0, 1.0);
+		gl->ClearColor(0.0f, 0.05f, 0.1f, 1.0f);
 		gl->Clear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	}
 
