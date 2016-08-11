@@ -281,10 +281,11 @@ public:
 		RenderSprite3D( sprite, ent->Model() );
 	}
 
-	uint32_t timer = 0;
 
 	void RenderFinish( SDL_Window* mainWindow, uint32_t delta )
 	{
+		static uint32_t timer = 0;
+
 		gl->BindFramebuffer(GL_FRAMEBUFFER, 0);
 		gl->BindVertexArray(postvao);
 		gl->Disable(GL_DEPTH_TEST);
@@ -295,7 +296,8 @@ public:
 			timer = delta;
 			for( int i = 0; i < 256; i++ )
 			{
-				array[i] = float(rng.uniform(0,3))/10.f;
+				float val = rng.uniform() / 4.f;
+				array[i] = val;
 			}
 		}
 		else
