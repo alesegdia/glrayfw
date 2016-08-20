@@ -17,23 +17,6 @@ public:
 	static const int BLOCK_FREE = 0;
 	static const int BLOCK_SOLID = 1;
 
-
-private:
-
-	struct BlockData
-	{
-		void Set( int x, int y, int block_type );
-
-		int x, y;
-		int block_type;
-	};
-
-	Matrix2D<int> map_data;
-	bool modelsBufferGenerated = false;
-	DynamicArray<cml::matrix44f_c> models_list[3];
-
-public:
-
 	Map& operator=( const Map& other );
 	Map( const Map& other );
 	Map();
@@ -57,5 +40,19 @@ public:
 	void GenerateModels( int block_type = 1 );
 	cml::matrix44f_c* GetModelsBuffer( int num );
 	int GetModelsNum(int num);
+
+private:
+
+	struct BlockData
+	{
+		void Set( int x, int y, int block_type );
+
+		int x, y;
+		int block_type;
+	};
+
+	Matrix2D<int> map_data;
+	bool modelsBufferGenerated = false;
+	DynamicArray<cml::matrix44f_c> models_list[3];
 
 };
