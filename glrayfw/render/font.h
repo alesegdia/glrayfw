@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <freetype2/config/ftheader.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "program.h"
