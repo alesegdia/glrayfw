@@ -30,7 +30,7 @@ protected:
 
 public:
 	SDLGLApp ( int width, int height, uint32_t sdlwinflags=(SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL) );
-	virtual ~SDLGLApp ();
+    virtual ~SDLGLApp () = 0 ;
 
 	int Exec(int argc, char** argv);
 
