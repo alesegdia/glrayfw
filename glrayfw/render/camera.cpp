@@ -2,11 +2,11 @@
 #include "camera.h"
 
 Camera::Camera() :
-	m_fieldOfView( cml::rad(60.f) ),
-	m_aspect( 4.f / 3.f ),
+    m_fieldOfView( cml::rad(90.f) ),
+    m_aspect( 16.f / 9.f ),
 	m_nearClip( 0.01f ),
 	m_farClip( 100.f ),
-	m_position( 0.f, 0.f, -1.f ),
+    m_position( 0.f, 0.f, -1.f ),
 	m_horizontalAngle( 0.f ),
 	m_verticalAngle( 0.f )
 {
@@ -21,11 +21,6 @@ void Camera::aspect( float a )
 void Camera::position( const cml::vector3f& pos )
 {
 	m_position = pos;
-}
-
-void Camera::offsetPosition( const cml::vector3f& offsetPosition )
-{
-	m_position += offsetPosition;
 }
 
 const cml::vector3f& Camera::position() const
@@ -57,7 +52,9 @@ void Camera::horizontalAngle(float angle)
 void Camera::computeProjection()
 {
 	m_projection = cml::identity<4>();
-	cml::matrix_perspective_xfov_RH( m_projection, m_fieldOfView, m_aspect, m_nearClip, m_farClip, cml::ZClip::z_clip_neg_one );
+    float k = 500000;
+    //cml::matrix_perspective_xfov_RH( m_projection, m_fieldOfView, m_aspect, m_nearClip, m_farClip, cml::ZClip::z_clip_neg_one );
+    cml::matrix_perspective_RH(m_projection, 1280.f / k, 720.f / k, 0.001f, 10000.f, cml::ZClip::z_clip_zero);
 }
 
 const cml::matrix44f_c& Camera::projection()
@@ -73,10 +70,11 @@ const cml::matrix44f_c& Camera::view()
 
 void Camera::computeView()
 {
-	cml::matrix44f_c orientation, translation;
+    cml::matrix44f_c orientation, translation, scale;
 	translation = cml::identity<4>();
-	orientation = cml::identity<4>();
-	cml::matrix_rotate_about_local_axis( orientation, 0, cml::rad(m_verticalAngle) );
+    orientation = cml::identity<4>();
+    scale = cml::identity<4>();
+    cml::matrix_rotate_about_local_axis( orientation, 0, cml::rad(m_verticalAngle) );
 	cml::matrix_rotate_about_local_axis( orientation, 1, cml::rad(m_horizontalAngle) );
 	cml::matrix_set_translation( translation, m_position );
 	m_view = orientation * translation;

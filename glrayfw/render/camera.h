@@ -8,7 +8,6 @@ public:
 
 	void position( const cml::vector3f& pos );
 	const cml::vector3f& position() const;
-	void offsetPosition( const cml::vector3f& offsetPosition );
 
 	void offsetAngle( float hor, float ver );
 	float horizontalAngle() const;
@@ -36,7 +35,7 @@ private:
 	float m_farClip;
 
 	// Transform
-	cml::vector3f m_position;
+    cml::vector3f m_position;
 	float m_horizontalAngle;
 	float m_verticalAngle;
 };

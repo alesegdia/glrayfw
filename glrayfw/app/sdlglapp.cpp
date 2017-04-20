@@ -18,22 +18,50 @@ SDLGLApp::~SDLGLApp()
 
 int SDLGLApp::Exec(int argc, char** argv)
 {
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
 
-	mainWindow = SDL_CreateWindow(
+    SDL_DisplayMode current;
+
+    for(int i = 0; i < SDL_GetNumVideoDisplays(); ++i){
+
+        int should_be_zero = SDL_GetCurrentDisplayMode(i, &current);
+
+        if(should_be_zero != 0)
+        {
+            SDL_Log("Could not get display mode for video display #%d: %s", i, SDL_GetError());
+        }
+        else
+        {
+            SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, current.w, current.h, current.refresh_rate);
+        }
+    }
+
+    //winWidth = current.w;
+    //winHeight = current.h;
+
+    mainWindow = SDL_CreateWindow(
 		"SDL2 test",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		winWidth, winHeight, sdlwinflags);
+        winWidth, winHeight, sdlwinflags);
 
 	if(!mainWindow) {
 		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return -2;
 	}
 
-	mainGLContext = SDL_GL_CreateContext(mainWindow);
+    mainGLContext = SDL_GL_CreateContext(mainWindow);
+    //SDL_SetWindowFullscreen(mainWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+
 	gl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
 	gl->MakeCurrent( mainWindow );
-	SDL_GL_SetSwapInterval(0);
+    SDL_GL_SetSwapInterval(0);
+    //SDL_GetWindowSize(mainWindow, &(this->winWidth), &(this->winHeight));
+
+
+    //SDL_SetWindowSize(mainWindow, current.w, current.h);
+
+
 
 	Setup(argc,argv);
 
