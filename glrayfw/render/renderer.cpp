@@ -58,7 +58,7 @@ void Renderer::prepare(Render::Context *gl, Camera *cam, int winWidth, int winHe
 	gl->BindTexture(GL_TEXTURE_2D, texColorBuffer);
 
 	gl->TexImage2D(
-				GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+                GL_TEXTURE_2D, 0, GL_RGB, this->ww, this->wh, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
 				);
 
 	gl->TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -70,7 +70,7 @@ void Renderer::prepare(Render::Context *gl, Camera *cam, int winWidth, int winHe
 
 	gl->GenRenderbuffers(1, &rboDepthStencil);
 	gl->BindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
-	gl->RenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+    gl->RenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, this->ww, this->wh);
 
 
 	gl->FramebufferRenderbuffer(
@@ -98,7 +98,6 @@ void Renderer::renderText(const char *text, float x, float y, cml::vector4f colo
 	gl->BindBuffer( GL_ARRAY_BUFFER, fontvbo );
 	gl->EnableVertexAttribArray( attribute_coord );
 	gl->VertexAttribPointer( attribute_coord, 4, GL_FLOAT, GL_FALSE, 0, 0 );
-
 
 	int nvert = default_font.UpdateGPUQuads( gl, text, x, y, sx, sy );
 	gl->DrawArrays(GL_TRIANGLES, 0, nvert);
