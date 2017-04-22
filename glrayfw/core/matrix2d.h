@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <iostream>
 
+namespace matrix {
+
 template <typename T>
 class Matrix2D
 {
@@ -16,6 +18,18 @@ private:
 
 
 public:
+
+    int getScroll(int x, int y)
+    {
+        size_t W = Cols();
+        size_t H = Rows();
+        if( x < 0 ) x = W + x;
+        else if( x >= W ) x = W - x;
+        if( y < 0 ) y = H + y;
+        else if( y >= H ) y = H - y;
+        return Get(x,y);
+    }
+
 
 	const void* Raw()
 	{
@@ -142,4 +156,6 @@ public:
 
 };
 
-//template class Matrix2D<int>;
+}
+
+typedef matrix::Matrix2D<int> Matrix2D;

@@ -3,14 +3,9 @@
 #include "layers.h"
 #include <cstdint>
 
-void Physics::Init( int argc, char** argv, b2ContactListener* b2cl )
+void Physics::Init( )
 {
-	B2_NOT_USED(argc);
-	B2_NOT_USED(argv);
-
-	world = new b2World(b2Vec2(0.f,0.f));
-	this->contactlistener = b2cl;
-	world->SetContactListener(contactlistener);
+    world = new b2World(b2Vec2(0.f,0.f));
 }
 
 void Physics::Cleanup()

@@ -170,7 +170,7 @@ void Renderer::bindVisionRange(GLuint shaderprogram)
 	gl->Uniform1f( gl->GetUniformLocation( shaderprogram, "range" ), PLAYER_VISION_RANGE );
 }
 
-void Renderer::RenderMap(Map &map, tdogl::Texture *tex1, tdogl::Texture *tex2, tdogl::Texture *tex3)
+void Renderer::RenderMap(Scene& scene, tdogl::Texture *tex1, tdogl::Texture *tex2, tdogl::Texture *tex3)
 {
 	GLuint shaderprogram = blockprog.Object();
 	gl->UseProgram( shaderprogram );
@@ -179,9 +179,10 @@ void Renderer::RenderMap(Map &map, tdogl::Texture *tex1, tdogl::Texture *tex2, t
 
 	GLuint VAO = block.GetVAO();
 	gl->BindVertexArray(VAO);
-	RenderBlocks( map, tex1, 1 );
-	RenderBlocks( map, tex2, 2 );
-	RenderBlocks( map, tex3, 3 );
+    for( int i = 0; i < scene.numTiles(); i++ )
+    {
+        RenderBlocks( scene, i );
+    }
 	gl->BindVertexArray(0);
 }
 
@@ -269,16 +270,15 @@ void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
 	SDL_GL_SwapWindow(mainWindow);
 }
 
-void Renderer::RenderBlocks(Map &map, tdogl::Texture *tex, int num)
+void Renderer::RenderBlocks(Scene& scene, int i)
 {
 	GLuint shaderprogram = blockprog.Object();
 	gl->ActiveTexture(GL_TEXTURE0);
-	gl->BindTexture(GL_TEXTURE_2D, tex->object());
+    gl->BindTexture(GL_TEXTURE_2D, scene.getTextureForTile(i)->object());
 	gl->Uniform1i( gl->GetUniformLocation( shaderprogram, "tex" ), 0 );
-	GLvoid* cpu_model_buffer = ( (GLvoid*) map.GetModelsBuffer(num) );
 	gl->BindBuffer(GL_ARRAY_BUFFER, block.GetVBO(1));
-	gl->BufferData( GL_ARRAY_BUFFER, sizeof(cml::matrix44f_c) * map.GetModelsNum(num), cpu_model_buffer, GL_STATIC_DRAW);
-	gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), map.GetModelsNum(num) );
+    gl->BufferData( GL_ARRAY_BUFFER, sizeof(cml::matrix44f_c) * scene.getModelsNum(i), scene.getModelsBuffer(i), GL_STATIC_DRAW);
+    gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), scene.getModelsNum(i) );
 }
 
 void Renderer::SetupRender() {

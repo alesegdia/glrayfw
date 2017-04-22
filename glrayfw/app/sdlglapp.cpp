@@ -61,6 +61,10 @@ int SDLGLApp::Exec(int argc, char** argv)
 
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
+    SDL_ShowCursor(0);
+    renderer.prepare( gl, &cam, winWidth, winHeight );
+    emanager.Prepare(&renderer);
+    physics.Init();
 
 
 	Setup(argc,argv);
@@ -97,7 +101,10 @@ int SDLGLApp::Exec(int argc, char** argv)
 			Update(TIME_STEP);
 			delta -= TIME_STEP;
 		}
-		if( was_updated ) Render();
+        if( was_updated )
+        {
+            Render();
+        }
 	}
 
 	Cleanup();

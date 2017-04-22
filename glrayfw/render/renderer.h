@@ -14,7 +14,7 @@
 #include "plane.h"
 #include "../core/random.h"
 #include "../entity/pawn.h"
-#include "../map/map.h"
+#include "scene.h"
 #include "camera.h"
 #include "font.h"
 
@@ -62,7 +62,7 @@ public:
 	void useCreatedFBO();
 	void renderClear();
 
-	void RenderMap( Map& map, tdogl::Texture* tex1, tdogl::Texture* tex2, tdogl::Texture* tex3 );
+    void RenderMap( Scene& map, tdogl::Texture* tex1, tdogl::Texture* tex2, tdogl::Texture* tex3 );
 	void BatchSprite3D();
 
 
@@ -71,7 +71,7 @@ public:
 	void RenderEntity( Entity* ent );
 
 	void RenderFinish( SDL_Window* mainWindow, uint32_t delta );
-	void RenderBlocks( Map& map, tdogl::Texture* tex, int num );
+    void RenderBlocks(Scene &scene, int i);
 	void SetupRender();
 
 	void RenderFloor( tdogl::Texture* t );

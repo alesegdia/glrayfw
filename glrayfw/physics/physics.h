@@ -33,13 +33,18 @@ public:
 	static const uint16_t EBULLET_MASK = CollisionLayer::MAP | CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 	static const uint16_t PICKUP_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 
-	void Init( int argc, char** argv, b2ContactListener* b2cl );
+    void Init();
 	void Cleanup();
 	b2Body* CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask );
 	b2Body* CreateSphereBody( float x, float y, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK );
 	void AddCubeBody( float x, float y );
 	void Step();
 	void Stress(Player*p);
+    void SetContactListener(b2ContactListener* listener)
+    {
+        contactlistener = listener;
+        world->SetContactListener(listener);
+    }
 
 
 };

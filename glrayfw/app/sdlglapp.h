@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include "../render/sdlcontext.h"
+#include "../render/renderer.h"
+#include "../physics/physics.h"
+#include "../entity/entitymanager.h"
 
 class SDLGLApp {
 
@@ -17,6 +20,11 @@ protected:
 	int winWidth, winHeight;
 
 	uint32_t sdlwinflags;
+
+    Renderer renderer;
+    EntityManager emanager;
+    Physics physics;
+    Camera cam;
 
 	virtual void Setup(int argc, char** argv) = 0 ;
 	virtual void Update(uint32_t delta) = 0 ;
