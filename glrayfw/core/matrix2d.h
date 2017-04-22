@@ -138,8 +138,8 @@ public:
 		}
 	}
 
-	int Rows() { return rows; }
-	int Cols() { return cols; }
+    int Rows() const { return rows; }
+    int Cols() const { return cols; }
 
 	Matrix2D& operator=( const Matrix2D& other )
 	{

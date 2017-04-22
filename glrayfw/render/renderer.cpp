@@ -170,7 +170,7 @@ void Renderer::bindVisionRange(GLuint shaderprogram)
 	gl->Uniform1f( gl->GetUniformLocation( shaderprogram, "range" ), PLAYER_VISION_RANGE );
 }
 
-void Renderer::RenderMap(Scene& scene, tdogl::Texture *tex1, tdogl::Texture *tex2, tdogl::Texture *tex3)
+void Renderer::RenderMap(Scene& scene)
 {
 	GLuint shaderprogram = blockprog.Object();
 	gl->UseProgram( shaderprogram );
@@ -305,10 +305,10 @@ void Renderer::RenderBigPlane(tdogl::Texture *t, float y, float z, float rotatio
 
 void Renderer::Dispose()
 {
+    Font::Dispose();
 	quadprog.Dispose( gl );
 	blockprog.Dispose( gl );
 	block.Dispose( gl );
 	plane.Dispose(gl);
 	gl->DeleteBuffers(1,&postvbo);
-	Font::Dispose();
 }

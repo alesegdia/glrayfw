@@ -62,15 +62,18 @@ int SDLGLApp::Exec(int argc, char** argv)
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);
-    renderer.prepare( gl, &cam, winWidth, winHeight );
-    emanager.Prepare(&renderer);
-    physics.Init();
+    m_renderer.prepare( gl, &m_cam, winWidth, winHeight );
+    emanager.Prepare(&m_renderer);
+    m_physics.Init();
+    m_cam.position( cml::vector3f(0,0,0) );
+    m_cam.horizontalAngle( 90 );
+
 
 
 	Setup(argc,argv);
 
 	SDL_Event event;
-	const int TIME_STEP = 20;
+    const int TIME_STEP = 1000/60;
 	int currtime = SDL_GetTicks();
 	int delta = 0 ;
 
@@ -98,16 +101,22 @@ int SDLGLApp::Exec(int argc, char** argv)
 		while( delta >= TIME_STEP ) {
 			was_updated = true;
 			i++;
+            PreUpdate(delta);
 			Update(TIME_STEP);
+            PostUpdate();
 			delta -= TIME_STEP;
 		}
         if( was_updated )
         {
             Render();
+            m_renderer.RenderFinish( mainWindow, delta );
         }
 	}
 
 	Cleanup();
+    m_renderer.Dispose( );
+    emanager.ClearAllEntities();
+    m_physics.Cleanup();
 
 	gl->Cleanup();
     SDL_DestroyWindow(mainWindow);

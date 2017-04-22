@@ -62,7 +62,7 @@ public:
 	void useCreatedFBO();
 	void renderClear();
 
-    void RenderMap( Scene& map, tdogl::Texture* tex1, tdogl::Texture* tex2, tdogl::Texture* tex3 );
+    void RenderMap(Scene& map);
 	void BatchSprite3D();
 
 

@@ -140,6 +140,8 @@ public:
 
 	GLuint Texture() { return tex; }
 
+
+
 private:
 
 	void SetSize( int size )

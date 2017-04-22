@@ -83,13 +83,33 @@ public:
         return models_list[num].Size();
     }
 
-
-private:
-
     Matrix2D& tilemap()
     {
         return m_tilemap;
     }
+
+    void setFloorTexture(tdogl::Texture* floor_tex)
+    {
+        m_floorTex = floor_tex;
+    }
+
+    void setRoofTexture(tdogl::Texture* roof_tex)
+    {
+        m_roofTex = roof_tex;
+    }
+
+    tdogl::Texture* floorTex()
+    {
+        return m_floorTex;
+    }
+
+    tdogl::Texture* roofTex()
+    {
+        return m_roofTex;
+    }
+
+
+private:
 
 
     struct BlockData
@@ -109,5 +129,9 @@ private:
     std::array<tdogl::Texture*, 10> m_textures;
     DynamicArray<cml::matrix44f_c> models_list[3];
     bool modelsBufferGenerated = false;
+
+    tdogl::Texture* m_roofTex;
+    tdogl::Texture* m_floorTex;
+
 
 };
