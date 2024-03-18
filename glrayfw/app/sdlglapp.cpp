@@ -97,7 +97,7 @@ int SDLGLApp::Exec(int argc, char** argv)
 		}
 
 		int i = 0;
-		bool was_updated;
+		bool was_updated = false;
 		while( delta >= TIME_STEP ) {
 			was_updated = true;
 			i++;

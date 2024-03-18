@@ -110,7 +110,7 @@ public:
 	void SetPhysicBody( b2Body* body )
 	{
 		this->body = body;
-		this->body->SetUserData(this);
+		//this->body->userData.pointer = this;
 	}
 
 	b2Body* GetPhysicBody()

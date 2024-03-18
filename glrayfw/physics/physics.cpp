@@ -13,7 +13,7 @@ void Physics::Cleanup()
 	delete world;
 }
 
-b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask )
+b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask, uintptr_t userData)
 {
 	// BODY CONF
 	b2BodyDef bodyDef;
@@ -41,12 +41,13 @@ b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, ui
 	return body;
 }
 
-b2Body* Physics::CreateSphereBody( float x, float y, CollisionLayer category, uint16_t mask )
+b2Body* Physics::CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category, uint16_t mask )
 {
 	// BODY CONF
 	b2BodyDef bodyDef;
 	bodyDef.position.Set( x, y );
 	bodyDef.type = b2_dynamicBody;
+	bodyDef.userData.pointer = userData;
 	b2Body* body = world->CreateBody(&bodyDef);
 
 	// SHAPE CONF
@@ -67,12 +68,13 @@ b2Body* Physics::CreateSphereBody( float x, float y, CollisionLayer category, ui
 	return body;
 }
 
-void Physics::AddCubeBody( float x, float y )
+void Physics::AddCubeBody( float x, float y, uintptr_t userData)
 {
 	// BODY CONF
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set( x, y );
+	bodyDef.userData.pointer = userData;
 	b2Body* body = world->CreateBody(&bodyDef);
 
 	// SHAPE CONF

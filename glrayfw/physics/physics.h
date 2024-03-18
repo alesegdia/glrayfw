@@ -15,7 +15,7 @@ class Physics
 
 private:
 
-	const float32 timeStep = 1.0f / 60.0f;
+	const float timeStep = 1.0f / 60.0f;
 	const int32 velocityIterations = 6;
 	const int32 positionIterations = 2;
 	RNG rng;
@@ -35,9 +35,9 @@ public:
 
     void Init();
 	void Cleanup();
-	b2Body* CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask );
-	b2Body* CreateSphereBody( float x, float y, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK );
-	void AddCubeBody( float x, float y );
+	b2Body* CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask, uintptr_t userData);
+	b2Body* CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK );
+	void AddCubeBody( float x, float y, uintptr_t userData);
 	void Step();
 	void Stress(Player*p);
     void SetContactListener(b2ContactListener* listener)

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "../render/sdlcontext.h"
 #include "../render/renderer.h"
 #include "../physics/physics.h"
@@ -65,7 +65,7 @@ protected:
             for( int j = 0; j < tilemap.Rows(); j++ )
             {
                 if( tilemap.Get(i,j) != 0 )
-                    m_physics.AddCubeBody(-i*2,-j*2);
+                    m_physics.AddCubeBody(-i*2,-j*2, 0);
             }
         }
     }

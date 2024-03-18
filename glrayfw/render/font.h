@@ -83,7 +83,7 @@ public:
 			c[i].tx = (float)ox / (float)w;
 			c[i].ty = 0;
 
-			rowh = std::max( rowh, g->bitmap.rows );
+			rowh = max( rowh, g->bitmap.rows );
 			ox += g->bitmap.width+1;
 		}
 
@@ -94,6 +94,7 @@ public:
 
 	int UpdateGPUQuads( Render::Context* gl, const char* text, float x, float y, float sx, float sy )
 	{
+		/*
 		struct point {
 			GLfloat x;
 			GLfloat y;
@@ -108,11 +109,11 @@ public:
 			float w = c[*p].bw * sx;
 			float h = c[*p].bh * sy;
 
-			/* Advance the cursor to the start of the next character */
+			// Advance the cursor to the start of the next character
 			x += c[*p].ax * sx;
 			y += c[*p].ay * sy;
 
-			/* Skip glyphs that have no pixels */
+			// Skip glyphs that have no pixels
 			if(!w || !h)
 			{
 				continue;
@@ -136,6 +137,8 @@ public:
 		}
 		gl->BufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
 		return n;
+		*/
+		return 0;
 	}
 
 	GLuint Texture() { return tex; }
