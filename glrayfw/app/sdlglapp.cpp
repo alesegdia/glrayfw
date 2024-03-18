@@ -55,10 +55,12 @@ int SDLGLApp::Exec(int argc, char** argv)
 
 	gl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
 	gl->MakeCurrent( mainWindow );
-    SDL_GL_SetSwapInterval(0);
+    SDL_GL_SetSwapInterval(1);
     //SDL_GetWindowSize(mainWindow, &(this->winWidth), &(this->winHeight));
 
-
+	//SDL_SetWindowMouseGrab(mainWindow, SDL_TRUE);
+	//SDL_CaptureMouse(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);
@@ -98,10 +100,11 @@ int SDLGLApp::Exec(int argc, char** argv)
 
 		int i = 0;
 		bool was_updated = false;
+		auto origDelta = delta;
 		while( delta >= TIME_STEP ) {
 			was_updated = true;
 			i++;
-            PreUpdate(delta);
+            PreUpdate(TIME_STEP);
 			Update(TIME_STEP);
             PostUpdate();
 			delta -= TIME_STEP;
@@ -109,7 +112,7 @@ int SDLGLApp::Exec(int argc, char** argv)
         if( was_updated )
         {
             Render();
-            m_renderer.RenderFinish( mainWindow, delta );
+            m_renderer.RenderFinish( mainWindow, origDelta );
         }
 	}
 

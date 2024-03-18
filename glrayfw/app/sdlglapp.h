@@ -84,8 +84,6 @@ protected:
 
     void PreUpdate(int delta)
     {
-        SDL_WarpMouseInWindow( NULL, 400, 300 );
-
         // Update everything
         m_sceneRoot.Update(Transform(), delta);
         physics().Step();
