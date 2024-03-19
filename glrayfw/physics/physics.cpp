@@ -20,6 +20,7 @@ b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, ui
 	bodyDef.position.Set( x, y );
 	bodyDef.bullet = true;
 	bodyDef.type = b2_dynamicBody;
+	bodyDef.userData.pointer = userData;
 	b2Body* body = world->CreateBody(&bodyDef);
 
 	// SHAPE CONF

@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 #include "program.h"
 #include "context.h"
-
+#include <iostream>
 #include <algorithm>
 
 class Font {
@@ -91,20 +91,21 @@ public:
 
 	}
 
-
-	int UpdateGPUQuads( Render::Context* gl, const char* text, float x, float y, float sx, float sy )
+	int UpdateGPUQuads(Render::Context* gl, const char* text, float x, float y, float sx, float sy)
 	{
-		/*
+		int coordsSize = strlen(text) * 6;
 		struct point {
 			GLfloat x;
 			GLfloat y;
 			GLfloat s;
 			GLfloat t;
-		} coords[6 * strlen(text)];
+		};
+
+		point* coords = new point[coordsSize];
 
 		int n = 0;
-		for(const unsigned char *p = ((const unsigned char*)text); *p; p++) {
-			float x2 =  x + c[*p].bl * sx;
+		for (const unsigned char* p = ((const unsigned char*)text); *p; p++) {
+			float x2 = x + c[*p].bl * sx;
 			float y2 = -y - c[*p].bt * sy;
 			float w = c[*p].bw * sx;
 			float h = c[*p].bh * sy;
@@ -114,7 +115,7 @@ public:
 			y += c[*p].ay * sy;
 
 			// Skip glyphs that have no pixels
-			if(!w || !h)
+			if (!w || !h)
 			{
 				continue;
 			}
@@ -122,23 +123,24 @@ public:
 			float cpbh = c[*p].bh;
 			float cptx = c[*p].tx;
 			float cpbw = c[*p].bw;
-			coords[n++] = (point) {	x2 + w, -y2, cptx + c[*p].bw / this->w, 0 };
-			coords[n++] = (point) {
-				x2, -y2, cptx, 0};
-			coords[n++] = (point) {
-				x2, -y2 - h, cptx, cpbh/this->h};
-			coords[n++] = (point) {
-				x2 + w, -y2, cptx + cpbw / this->w , 0};
-			coords[n++] = (point) {
-				x2, -y2 - h, cptx, cpbh/this->h};
-			coords[n++] = (point) {
-				x2 + w, -y2 - h, cptx + cpbw / this->w , cpbh/this->h};
+			coords[n++] = { x2 + w, -y2, cptx + c[*p].bw / this->w, 0 };
+			coords[n++] = {
+				x2, -y2, cptx, 0 };
+			coords[n++] = {
+				x2, -y2 - h, cptx, cpbh / this->h };
+			coords[n++] = {
+				x2 + w, -y2, cptx + cpbw / this->w , 0 };
+			coords[n++] = {
+				x2, -y2 - h, cptx, cpbh / this->h };
+			coords[n++] = {
+				x2 + w, -y2 - h, cptx + cpbw / this->w , cpbh / this->h };
 
 		}
-		gl->BufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
+
+		gl->BufferData(GL_ARRAY_BUFFER, sizeof(coords[0]) * coordsSize, coords, GL_DYNAMIC_DRAW);
+
+		delete[] coords;
 		return n;
-		*/
-		return 0;
 	}
 
 	GLuint Texture() { return tex; }

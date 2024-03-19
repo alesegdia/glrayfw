@@ -57,6 +57,7 @@ protected:
         emanager.ClearAllEntities();
     }
 
+
     void loadCubesForScene(Scene* scn)
     {
         auto tilemap = scn->tilemap();

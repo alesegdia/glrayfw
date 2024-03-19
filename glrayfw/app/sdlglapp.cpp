@@ -88,10 +88,13 @@ int SDLGLApp::Exec(int argc, char** argv)
 		delta += (currtime - prevtime);
 		if( fpsc.GetFPS() != prevfps )
 		{
+			// commented cause it was giving a runtime error
+			/*
 			prevfps = fpsc.GetFPS();
 			char buffer[10];
 			sprintf(buffer, "%d fps", fpsc.GetFPS() );
 			SDL_SetWindowTitle( mainWindow, buffer );
+			*/
 		}
 
 		while(SDL_PollEvent(&event)) {
