@@ -87,7 +87,6 @@ void Renderer::prepare(Render::Context *gl, Camera *cam, int winWidth, int winHe
 
 void Renderer::renderText(const char *text, float x, float y, cml::vector4f color, float sx_, float sy_)
 {
-	/*
 	float sx = sx_ * (2.0 / ww);
 	float sy = sy_ * (2.0 / wh);
 	gl->UseProgram( fontprog.Object() );
@@ -103,7 +102,6 @@ void Renderer::renderText(const char *text, float x, float y, cml::vector4f colo
 	int nvert = default_font.UpdateGPUQuads( gl, text, x, y, sx, sy );
 	gl->DrawArrays(GL_TRIANGLES, 0, nvert);
 	gl->DisableVertexAttribArray(attribute_coord);
-	*/
 }
 
 void Renderer::bindPostFBO()
