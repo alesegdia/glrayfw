@@ -179,7 +179,7 @@ void Renderer::RenderMap(Scene& scene)
 
 	GLuint VAO = block.GetVAO();
 	gl->BindVertexArray(VAO);
-    for( int i = 0; i < scene.numTiles(); i++ )
+    for( int i = 0; i < scene.NumTypeTiles(); i++ )
     {
         RenderBlocks( scene, i );
     }

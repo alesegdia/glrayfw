@@ -15,6 +15,7 @@
 class Scene
 {
     static constexpr size_t NUM_TILES = 10;
+    static constexpr size_t NUM_TILE_MODELS = 3;
 
 public:
     const Matrix2D& tilemap() const
@@ -27,9 +28,9 @@ public:
         m_tilemap = tilemap;
     }
 
-    int numTiles()
+    int NumTypeTiles()
     {
-        return 3;
+        return NUM_TILE_MODELS;
     }
 
     tdogl::Texture* getTextureForTile(size_t tile_id)
@@ -70,9 +71,10 @@ public:
     {
         if( !modelsBufferGenerated )
         {
-            generateModels(0);
-            generateModels(1);
-            generateModels(2);
+            for (int i = 0; i < NumTypeTiles(); i++)
+            {
+                generateModels(i);
+            }
             modelsBufferGenerated = true;
         }
         return models_list[num].GetRawData();
