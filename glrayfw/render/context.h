@@ -99,6 +99,8 @@ public:
   PFNGLVERTEXATTRIBDIVISORPROC VertexAttribDivisor;
   PFNGLDRAWARRAYSINSTANCEDPROC DrawArraysInstanced;
 
+  PFNGLGETSTRINGPROC GetString;
+
 
 protected:
 

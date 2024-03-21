@@ -71,7 +71,8 @@ bool Context::MakeCurrent()
     GetProc( RenderbufferStorage, "glRenderbufferStorage" ) &&
     GetProc( FramebufferRenderbuffer, "glFramebufferRenderbuffer" ) &&
 
-    GetProc( DeleteVertexArrays, "glDeleteVertexArrays" );
+    GetProc(DeleteVertexArrays, "glDeleteVertexArrays") &&
+    GetProc(GetString, "glGetString");
 }
 
 }

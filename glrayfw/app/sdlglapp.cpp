@@ -70,7 +70,21 @@ int SDLGLApp::Exec(int argc, char** argv)
     m_cam.position( cml::vector3f(0,0,0) );
     m_cam.horizontalAngle( 90 );
 
+	const unsigned char* vendor;
+	vendor = gl->GetString(GL_VENDOR);
+	std::cout << "GL vendor: " << vendor << std::endl;
 
+	const unsigned char* renderer;
+	renderer = gl->GetString(GL_RENDERER);
+	std::cout << "GL renderer: " << renderer << std::endl;
+
+	const unsigned char* version;
+	version = gl->GetString(GL_VERSION);
+	std::cout << "GL version: " << version << std::endl;
+
+	const unsigned char* shading;
+	shading = gl->GetString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "GL shading lang version: " << shading << std::endl;
 
 	Setup(argc,argv);
 
