@@ -110,7 +110,6 @@ public:
 	void SetPhysicBody( b2Body* body )
 	{
 		this->body = body;
-		//this->body->userData.pointer = this;
 	}
 
 	b2Body* GetPhysicBody()
@@ -164,6 +163,11 @@ public:
 		this->sprite = sprite;
 	}
 
+	cml::vector2f GetForward()
+	{
+		return cml::rotate_vector_2D(cml::vector2f(0.f, 1.f), transform.logic_angle);
+	}
+
 	Transform& GetTransform()
 	{
 		return transform;
@@ -180,6 +184,11 @@ public:
 	Sprite3D* GetSprite()
 	{
 		return sprite;
+	}
+
+	void DoLogicAngleAdd(float angle)
+	{
+		transform.logic_angle += cml::rad(angle);
 	}
 
 };
