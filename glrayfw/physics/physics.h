@@ -36,7 +36,7 @@ public:
     void Init();
 	void Cleanup();
 	b2Body* CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask, uintptr_t userData);
-	b2Body* CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK );
+	b2Body* CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK, bool isDynamic = true );
 	void AddCubeBody( float x, float y, uintptr_t userData);
 	void Step();
 	void Stress(Player*p);

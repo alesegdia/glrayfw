@@ -42,12 +42,12 @@ b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, ui
 	return body;
 }
 
-b2Body* Physics::CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category, uint16_t mask )
+b2Body* Physics::CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category, uint16_t mask, bool isDynamic )
 {
 	// BODY CONF
 	b2BodyDef bodyDef;
 	bodyDef.position.Set( x, y );
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
 	bodyDef.userData.pointer = userData;
 	b2Body* body = world->CreateBody(&bodyDef);
 
