@@ -108,7 +108,6 @@ protected:
         m_renderer.RenderMap( *m_scene );
         m_renderer.BatchSprite3D();
         emanager.RenderEntities( viewer_angle );
-
     }
 
     Renderer& renderer()

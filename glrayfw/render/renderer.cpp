@@ -237,6 +237,14 @@ void Renderer::RenderEntity(Entity *ent)
 	RenderSprite3D( sprite, ent->Model() );
 }
 
+void Renderer::Update()
+{
+	cam->DecayShake(0.9f);
+	m_redScreen *= 0.9f;
+	m_greenScreen *= 0.9f;
+	m_orangeScreen *= 0.9f;
+}
+
 void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
 {
 	static uint32_t timer = 0;
@@ -260,7 +268,12 @@ void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
 		timer += delta;
 	}
 	gl->Uniform1fv( gl->GetUniformLocation( postprog.Object(), "scanarray" ), 256, array );
-	gl->Uniform1f( gl->GetUniformLocation( postprog.Object(), "time" ), SDL_GetTicks() );
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "time"), SDL_GetTicks());
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "health"), m_health);
+
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "paintimer"), m_redScreen);
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "hptimer"), m_greenScreen);
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "ammotimer"), m_orangeScreen);
 
 	gl->ActiveTexture(GL_TEXTURE0);
 	gl->BindTexture(GL_TEXTURE_2D, texColorBuffer);

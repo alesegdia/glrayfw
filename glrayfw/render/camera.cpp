@@ -76,7 +76,9 @@ void Camera::computeView()
     scale = cml::identity<4>();
     cml::matrix_rotate_about_local_axis( orientation, 0, cml::rad(m_verticalAngle) );
 	cml::matrix_rotate_about_local_axis( orientation, 1, cml::rad(m_horizontalAngle) );
-	cml::matrix_set_translation( translation, m_position );
+
+	cml::vector3f off = { (rand() * m_shake) / 100, (rand() * m_shake) / 100, (rand() * m_shake) / 100 };
+	cml::matrix_set_translation( translation, m_position + off);
 	m_view = orientation * translation;
 }
 

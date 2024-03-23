@@ -23,6 +23,16 @@ public:
 	cml::matrix44f_c viewProjectionMatrix();
 	void aspect( float a );
 
+	void AddShake(float amount)
+	{
+		m_shake += amount;
+	}
+
+	void DecayShake(float howMuch)
+	{
+		m_shake *= howMuch;
+	}
+
 private:
 	void computeProjection();
 	void computeView();
@@ -38,5 +48,7 @@ private:
     cml::vector3f m_position;
 	float m_horizontalAngle;
 	float m_verticalAngle;
+	float m_maxshake = 0.0002f;
+	float m_shake = 0.f;
 };
 

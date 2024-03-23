@@ -44,6 +44,8 @@ int SDLGLApp::Exec(int argc, char** argv)
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
         winWidth, winHeight, sdlwinflags);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_WarpMouseInWindow(NULL, 400, 300);
 
 	if(!mainWindow) {
 		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
@@ -60,7 +62,6 @@ int SDLGLApp::Exec(int argc, char** argv)
 
 	//SDL_SetWindowMouseGrab(mainWindow, SDL_TRUE);
 	//SDL_CaptureMouse(SDL_TRUE);
-	SDL_SetRelativeMouseMode(SDL_TRUE);
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);

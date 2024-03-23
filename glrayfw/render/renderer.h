@@ -48,7 +48,38 @@ private:
 	inline void bindVP( GLuint shaderprogram );
 	inline void bindVisionRange( GLuint shaderprogram );
 
+	float m_health = 0;
+	float m_redScreen = 0.0f;
+	float m_greenScreen = 0.0f;
+	float m_orangeScreen = 0.0f;
+
 public:
+
+
+	void SetPlayerHealth(float playerHealth)
+	{
+		m_health = playerHealth > 1.0f ? 1.0f : playerHealth;
+	}
+
+	void AddShake(float shake)
+	{
+		cam->AddShake(shake);
+	}
+
+	void AddRedScreen(float rs)
+	{
+		m_redScreen += rs;
+	}
+
+	void AddGreenScreen(float rs)
+	{
+		m_greenScreen += rs;
+	}
+
+	void AddOrangeScreen(float rs)
+	{
+		m_orangeScreen += rs;
+	}
 
 	void prepare( Render::Context* gl, Camera* cam, int winWidth, int winHeight );
 
@@ -65,6 +96,7 @@ public:
     void RenderMap(Scene& map);
 	void BatchSprite3D();
 
+	void Update();
 
 	void RenderPlane( Plane* p, const cml::matrix44f_c& model, tdogl::Texture* tex );
 	void RenderSprite3D( Sprite3D* sprite, const cml::matrix44f_c& model );
