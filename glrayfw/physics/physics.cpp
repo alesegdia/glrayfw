@@ -92,9 +92,9 @@ void Physics::AddCubeBody( float x, float y, uintptr_t userData)
 
 }
 
-void Physics::Step()
+void Physics::Step(float factor)
 {
-	world->Step(timeStep, velocityIterations, positionIterations);
+	world->Step(timeStep * factor, velocityIterations, positionIterations);
 }
 
 class MyQueryCallback : public b2QueryCallback

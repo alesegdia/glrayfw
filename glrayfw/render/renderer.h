@@ -52,9 +52,14 @@ private:
 	float m_redScreen = 0.0f;
 	float m_greenScreen = 0.0f;
 	float m_orangeScreen = 0.0f;
+	float m_slowdown = 0.0f;
 
 public:
 
+	void SetSlowdown(float slowdown)
+	{
+		m_slowdown = slowdown;
+	}
 
 	void SetPlayerHealth(float playerHealth)
 	{

@@ -26,6 +26,8 @@ private:
     Camera m_cam;
     Transform m_sceneRoot;
 
+    float m_slowDown = 1.0f;
+
 
 protected:
 
@@ -34,6 +36,12 @@ protected:
 	virtual void Render() = 0 ;
 	virtual void Cleanup() = 0 ;
 	virtual void HandleEvent(SDL_Event& event) = 0 ;
+
+    void SetSlowDown(float slowdown)
+    {
+        m_slowDown = slowdown;
+        m_renderer.SetSlowdown(slowdown);
+    }
 
 	void Stop()
 	{ running=false; }
@@ -86,8 +94,8 @@ protected:
     void PreUpdate(int delta)
     {
         // Update everything
-        m_sceneRoot.Update(Transform(), delta);
-        physics().Step();
+        m_sceneRoot.Update(Transform(), delta * m_slowDown);
+        physics().Step(m_slowDown);
     }
 
     Transform& sceneRoot()

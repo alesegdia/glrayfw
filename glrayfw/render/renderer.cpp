@@ -274,6 +274,7 @@ void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
 	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "paintimer"), m_redScreen);
 	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "hptimer"), m_greenScreen);
 	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "ammotimer"), m_orangeScreen);
+	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "slowdown"), m_slowdown);
 
 	gl->ActiveTexture(GL_TEXTURE0);
 	gl->BindTexture(GL_TEXTURE_2D, texColorBuffer);

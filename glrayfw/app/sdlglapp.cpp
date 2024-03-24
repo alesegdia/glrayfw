@@ -1,6 +1,6 @@
 #include "sdlglapp.h"
 #include "../core/fpscounter.h"
-
+#include "glrayfw/core/core.h"
 #include <iostream>
 
 SDLGLApp::SDLGLApp ( int width, int height, uint32_t sdlwinflags ) {
@@ -73,19 +73,19 @@ int SDLGLApp::Exec(int argc, char** argv)
 
 	const unsigned char* vendor;
 	vendor = gl->GetString(GL_VENDOR);
-	std::cout << "GL vendor: " << vendor << std::endl;
+	Logger::getInstance().log(LogLevel::INFO, "GL vendor: ", vendor);
 
 	const unsigned char* renderer;
 	renderer = gl->GetString(GL_RENDERER);
-	std::cout << "GL renderer: " << renderer << std::endl;
+	Logger::getInstance().log(LogLevel::INFO, "GL renderer: ", renderer);
 
 	const unsigned char* version;
 	version = gl->GetString(GL_VERSION);
-	std::cout << "GL version: " << version << std::endl;
+	Logger::getInstance().log(LogLevel::INFO, "GL version: ", version);
 
 	const unsigned char* shading;
 	shading = gl->GetString(GL_SHADING_LANGUAGE_VERSION);
-	std::cout << "GL shading lang version: " << shading << std::endl;
+	Logger::getInstance().log(LogLevel::INFO, "GLSL version: ", shading);
 
 	Setup(argc,argv);
 

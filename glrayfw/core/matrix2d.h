@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include "glrayfw/core/core.h"
 
 namespace matrix {
 
