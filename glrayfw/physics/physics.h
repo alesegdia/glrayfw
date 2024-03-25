@@ -32,7 +32,7 @@ public:
 	static const uint16_t ABULLET_MASK = CollisionLayer::MAP | CollisionLayer::ENEMY;
 	static const uint16_t EBULLET_MASK = CollisionLayer::MAP | CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 	static const uint16_t PICKUP_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
-	static const uint16_t PORTAL_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
+	static const uint16_t PORTAL_MASK = CollisionLayer::PICKUP; // | CollisionLayer::ALLY
 
     void Init();
 	void Cleanup();

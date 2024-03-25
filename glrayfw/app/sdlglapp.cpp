@@ -9,11 +9,12 @@ SDLGLApp::SDLGLApp ( int width, int height, uint32_t sdlwinflags ) {
 	winWidth=width;
 	winHeight=height;
 	this->sdlwinflags=sdlwinflags;
+	m_engine = std::make_shared<Engine>();
 }
 
 SDLGLApp::~SDLGLApp()
 {
-	delete gl;
+	delete m_engine->gl();
 }
 
 int SDLGLApp::Exec(int argc, char** argv)
@@ -28,11 +29,11 @@ int SDLGLApp::Exec(int argc, char** argv)
 
         if(should_be_zero != 0)
         {
-            SDL_Log("Could not get display mode for video display #%d: %s", i, SDL_GetError());
+			Logger::getInstance().log(LogLevel::ERR, "Could not get display mode for video display #", i, ": ", SDL_GetError());
         }
         else
         {
-            SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, current.w, current.h, current.refresh_rate);
+			Logger::getInstance().log(LogLevel::INFO, "Display #", i, ": current display mode is ", current.w, "x", current.h, "px @ ", current.refresh_rate, "hz.");
         }
     }
 
@@ -48,16 +49,17 @@ int SDLGLApp::Exec(int argc, char** argv)
 	SDL_WarpMouseInWindow(NULL, 400, 300);
 
 	if(!mainWindow) {
-		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+		Logger::getInstance().log(LogLevel::ERR, "Window could not be created! SDL_Error: ", SDL_GetError() );
 		return -2;
 	}
 
     mainGLContext = SDL_GL_CreateContext(mainWindow);
     //SDL_SetWindowFullscreen(mainWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
-	gl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
-	gl->MakeCurrent( mainWindow );
-    SDL_GL_SetSwapInterval(1);
+	auto sdlgl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
+	m_engine->SetGL(sdlgl);
+	sdlgl->MakeCurrent(mainWindow);
+	SDL_GL_SetSwapInterval(1);
     //SDL_GetWindowSize(mainWindow, &(this->winWidth), &(this->winHeight));
 
 	//SDL_SetWindowMouseGrab(mainWindow, SDL_TRUE);
@@ -65,29 +67,34 @@ int SDLGLApp::Exec(int argc, char** argv)
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);
-    m_renderer.prepare( gl, &m_cam, winWidth, winHeight );
-    emanager.Prepare(&m_renderer);
-    m_physics.Init();
-    m_cam.position( cml::vector3f(0,0,0) );
-    m_cam.horizontalAngle( 90 );
+    m_engine->renderer().prepare(sdlgl, &m_engine->cam(), winWidth, winHeight);
+    m_engine->emanager().Prepare(&m_engine->renderer());
+    m_engine->physics().Init();
+    m_engine->cam().position( cml::vector3f(0,0,0) );
+    m_engine->cam().horizontalAngle( 90 );
 
 	const unsigned char* vendor;
-	vendor = gl->GetString(GL_VENDOR);
+	vendor = sdlgl->GetString(GL_VENDOR);
 	Logger::getInstance().log(LogLevel::INFO, "GL vendor: ", vendor);
 
 	const unsigned char* renderer;
-	renderer = gl->GetString(GL_RENDERER);
+	renderer = sdlgl->GetString(GL_RENDERER);
 	Logger::getInstance().log(LogLevel::INFO, "GL renderer: ", renderer);
 
 	const unsigned char* version;
-	version = gl->GetString(GL_VERSION);
+	version = sdlgl->GetString(GL_VERSION);
 	Logger::getInstance().log(LogLevel::INFO, "GL version: ", version);
 
 	const unsigned char* shading;
-	shading = gl->GetString(GL_SHADING_LANGUAGE_VERSION);
+	shading = sdlgl->GetString(GL_SHADING_LANGUAGE_VERSION);
 	Logger::getInstance().log(LogLevel::INFO, "GLSL version: ", shading);
 
-	Setup(argc,argv);
+	
+	for (int i = 0; i < argc; i++)
+	{
+		m_args.push_back(argv[i]);
+	}
+	Setup(m_args);
 
 	SDL_Event event;
     const int TIME_STEP = 1000/60;
@@ -130,16 +137,16 @@ int SDLGLApp::Exec(int argc, char** argv)
         if( was_updated )
         {
             Render();
-            m_renderer.RenderFinish( mainWindow, origDelta );
+            m_engine->renderer().RenderFinish(mainWindow, origDelta);
         }
 	}
 
 	Cleanup();
-    m_renderer.Dispose( );
-    emanager.ClearAllEntities();
-    m_physics.Cleanup();
+    m_engine->renderer().Dispose( );
+    m_engine->emanager().ClearAllEntities();
+    m_engine->physics().Cleanup();
 
-	gl->Cleanup();
+	sdlgl->Cleanup();
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
 

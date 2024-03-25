@@ -56,7 +56,6 @@ public:
 				offset += 6*2;
 			}
 		}
-		printf("offset: %d\n", offset);
 	}
 
 };
