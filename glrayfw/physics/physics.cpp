@@ -3,14 +3,19 @@
 #include "layers.h"
 #include <cstdint>
 
-void Physics::Init( )
+Physics::Physics(b2ContactListener* listener)
 {
     world = new b2World(b2Vec2(0.f,0.f));
+	world->SetContactListener(listener);
 }
 
 void Physics::Cleanup()
 {
-	delete world;
+	if (world)
+	{
+		delete world;
+		world = nullptr;
+	}
 }
 
 b2Body* Physics::CreateBulletBody( float x, float y, CollisionLayer category, uint16_t mask, uintptr_t userData)
@@ -110,21 +115,3 @@ class MyQueryCallback : public b2QueryCallback
 
 int MyQueryCallback::numbodies = 0;
 
-/*
-void Physics::Stress(Player* p)
-{
-	MyQueryCallback::numbodies = 0;
-	for( int i = 0; i < 100; i++ )
-	{
-		b2AABB aabb;
-		float x, y;
-		x = p->transform.position[0];
-		y = p->transform.position[2];
-		aabb.lowerBound = b2Vec2(-x,-y);
-		aabb.upperBound = b2Vec2(-x+rng.uniform(100,500),-y+rng.uniform(100,500));
-		MyQueryCallback mycb;
-		world->QueryAABB( &mycb, aabb );
-	}
-	printf("KERI! %d\n", MyQueryCallback::numbodies);
-}
-*/

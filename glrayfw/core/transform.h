@@ -24,10 +24,12 @@ public:
 
 	void UpdateClean(bool force=false);
 	Transform();
+	~Transform()
+	{
+		children.Clear();
+	}
 
 	void Update( const Transform& parent, uint32_t delta );
-
-	void Update2( const Transform& parent );
 
 	void AddChild( Transform* child );
 

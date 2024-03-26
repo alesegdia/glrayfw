@@ -2,15 +2,11 @@
 #include "entity.h"
 #include "entitymanager.h"
 
-EntityManager::EntityManager() {
-
-}
-
 EntityManager::~EntityManager() {
-
+	ClearAllEntities();
 }
 
-void EntityManager::Prepare( Renderer* renderer ) {
+EntityManager::EntityManager( std::shared_ptr<Renderer> renderer ) {
 	this->renderer = renderer;
 }
 
@@ -49,6 +45,11 @@ void EntityManager::ClearAllEntities() {
 
 	for( size_t i = 0; i < entities.Size(); i++ )
 	{
-		delete entities[i];
+		if (entities[i])
+		{
+			delete entities[i];
+			entities[i] = nullptr;
+		}
 	}
+	entities.Clear();
 }

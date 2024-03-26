@@ -9,12 +9,11 @@ SDLGLApp::SDLGLApp ( int width, int height, uint32_t sdlwinflags ) {
 	winWidth=width;
 	winHeight=height;
 	this->sdlwinflags=sdlwinflags;
-	m_engine = std::make_shared<Engine>();
 }
 
 SDLGLApp::~SDLGLApp()
 {
-	delete m_engine->gl();
+
 }
 
 int SDLGLApp::Exec(int argc, char** argv)
@@ -57,7 +56,6 @@ int SDLGLApp::Exec(int argc, char** argv)
     //SDL_SetWindowFullscreen(mainWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	auto sdlgl = new Render::SDL::Context( mainGLContext, Render::Context::Profile::Core );
-	m_engine->SetGL(sdlgl);
 	sdlgl->MakeCurrent(mainWindow);
 	SDL_GL_SetSwapInterval(1);
     //SDL_GetWindowSize(mainWindow, &(this->winWidth), &(this->winHeight));
@@ -67,11 +65,7 @@ int SDLGLApp::Exec(int argc, char** argv)
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);
-    m_engine->renderer().prepare(sdlgl, &m_engine->cam(), winWidth, winHeight);
-    m_engine->emanager().Prepare(&m_engine->renderer());
-    m_engine->physics().Init();
-    m_engine->cam().position( cml::vector3f(0,0,0) );
-    m_engine->cam().horizontalAngle( 90 );
+	m_engine = std::make_shared<Engine>(sdlgl, winWidth, winHeight);
 
 	const unsigned char* vendor;
 	vendor = sdlgl->GetString(GL_VENDOR);
@@ -137,16 +131,14 @@ int SDLGLApp::Exec(int argc, char** argv)
         if( was_updated )
         {
             Render();
-            m_engine->renderer().RenderFinish(mainWindow, origDelta);
+            m_engine->renderer()->RenderFinish(mainWindow, origDelta);
         }
 	}
 
 	Cleanup();
-    m_engine->renderer().Dispose( );
-    m_engine->emanager().ClearAllEntities();
-    m_engine->physics().Cleanup();
 
 	sdlgl->Cleanup();
+	delete sdlgl;
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
 

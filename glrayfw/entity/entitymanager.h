@@ -7,10 +7,9 @@ class Entity;
 
 class EntityManager {
 public:
-	EntityManager ();
 	virtual ~EntityManager ();
 
-	void Prepare(Renderer* renderer);
+	EntityManager(std::shared_ptr<Renderer> renderer);
 
 	void RenderEntities( float playerAngle );
 	void AddEntity(Entity* e);
@@ -21,7 +20,7 @@ public:
 
 private:
 
-	Renderer* renderer;
+	std::shared_ptr<Renderer> renderer;
 	DynamicArray<Entity*> entities;
 
 };

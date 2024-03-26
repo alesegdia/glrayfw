@@ -41,7 +41,7 @@ private:
 	GLuint attribute_coord, uniform_tex, uniform_color;
 	GLuint fontvao, fontvbo;
 	int ww, wh;
-	Camera* cam;
+	std::shared_ptr<Camera> cam;
 	Plane plane;
 	Font default_font;
 
@@ -54,7 +54,14 @@ private:
 	float m_orangeScreen = 0.0f;
 	float m_slowdown = 0.0f;
 
+	cml::vector3f m_clearColor = { 0.0f, 0.05f, 0.1f };
+
 public:
+
+	void SetClearColor(const cml::vector3f& clearColor)
+	{
+		m_clearColor = clearColor;
+	}
 
 	void SetSlowdown(float slowdown)
 	{
@@ -86,7 +93,7 @@ public:
 		m_orangeScreen += rs;
 	}
 
-	void prepare( Render::Context* gl, Camera* cam, int winWidth, int winHeight );
+	Renderer( Render::Context* gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight );
 
 	void renderText( const char* text, float x, float y, cml::vector4f color = cml::vectorf(1.f,0.f,0.f,1.f), float sx_ = 1.f, float sy_ = 1.f );
 

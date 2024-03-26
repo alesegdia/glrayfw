@@ -1,7 +1,7 @@
 
 #include "renderer.h"
 
-void Renderer::prepare(Render::Context *gl, Camera *cam, int winWidth, int winHeight)
+Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight)
 {
 	this->gl = gl;
 	this->ww = winWidth;
@@ -155,7 +155,7 @@ void Renderer::useCreatedFBO() { gl->BindFramebuffer( GL_FRAMEBUFFER, frameBuffe
 
 void Renderer::renderClear()
 {
-	gl->ClearColor(0.0f, 0.05f, 0.1f, 1.0f);
+	gl->ClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], 1.0f);
 	gl->Clear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
@@ -319,7 +319,6 @@ void Renderer::RenderBigPlane(tdogl::Texture *t, float y, float z, float rotatio
 
 void Renderer::Dispose()
 {
-    Font::Dispose();
 	quadprog.Dispose( gl );
 	blockprog.Dispose( gl );
 	block.Dispose( gl );
