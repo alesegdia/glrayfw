@@ -11,7 +11,7 @@ class DynamicArray
 
 protected:
 
-	static const size_t INITIAL_SIZE = 500;
+	static const size_t INITIAL_SIZE = 5;
 	static const size_t REALLOC_STEP = 5;
 
 	T* data;

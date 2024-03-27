@@ -1,6 +1,8 @@
 #include "sdlglapp.h"
 #include "../core/fpscounter.h"
 #include "glrayfw/core/core.h"
+#include "glrayfw/render/renderer.h"
+
 #include <iostream>
 
 SDLGLApp::SDLGLApp ( int width, int height, uint32_t sdlwinflags ) {

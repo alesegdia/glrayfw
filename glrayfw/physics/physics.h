@@ -25,12 +25,12 @@ private:
 
 public:
 
-	static const uint16_t PLAYER_MASK = CollisionLayer::PICKUP | CollisionLayer::ENEMY_BULLET | CollisionLayer::MAP | CollisionLayer::ENEMY;
+	static const uint16_t PLAYER_MASK = CollisionLayer::PICKUP | CollisionLayer::ENEMY_BULLET | CollisionLayer::MAP | CollisionLayer::ENEMY | CollisionLayer::PORTAL;
 	static const uint16_t MOB_MASK = CollisionLayer::ALLY_BULLET | CollisionLayer::MAP | CollisionLayer::ENEMY | CollisionLayer::PLAYER;
 	static const uint16_t ABULLET_MASK = CollisionLayer::MAP | CollisionLayer::ENEMY;
 	static const uint16_t EBULLET_MASK = CollisionLayer::MAP | CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 	static const uint16_t PICKUP_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
-	static const uint16_t PORTAL_MASK = CollisionLayer::PICKUP; // | CollisionLayer::ALLY
+	static const uint16_t PORTAL_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 
 	~Physics()
 	{

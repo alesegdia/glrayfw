@@ -16,7 +16,8 @@ public:
 		BULLET,
 		MOB,
 		PLAYER,
-		PICKUP
+		PICKUP,
+		PORTAL
 	};
 
 protected:
