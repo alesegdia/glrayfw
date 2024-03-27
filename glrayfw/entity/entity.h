@@ -1,10 +1,12 @@
 #pragma once
 
-#include "../render/sprite3d.h"
-#include "../core/transform.h"
-#include "../physics/layers.h"
+#include "glrayfw/render/sprite3d.h"
+#include "glrayfw/core/transform.h"
+#include "glrayfw/physics/layers.h"
 
 #include <Box2D/Box2D.h>
+
+#include <functional>
 
 class EntityController;
 
@@ -34,6 +36,7 @@ public:
 	Transform transform;
 	EntityController* controller;
 	int framex, framey;
+	std::function<void(Entity*)> onDie;
 
 	virtual void SetupFrame( const cml::vector3f& /* viewerPos */ ) {
 		framex = 0; framey = 0;
@@ -100,7 +103,9 @@ public:
 
 	void Die()
 	{
+		assert(isAlive);
 		isAlive = false;
+		onDie(this);
 	}
 
 	bool IsAlive()
