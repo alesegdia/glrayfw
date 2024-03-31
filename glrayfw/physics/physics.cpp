@@ -102,16 +102,4 @@ void Physics::Step(float factor)
 	world->Step(timeStep * factor, velocityIterations, positionIterations);
 }
 
-class MyQueryCallback : public b2QueryCallback
-{
-	public:
-		static int numbodies;
-		bool ReportFixture(b2Fixture*)
-		{
-			numbodies++;
-			return true;
-		}
-};
-
-int MyQueryCallback::numbodies = 0;
 

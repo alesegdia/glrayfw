@@ -4,10 +4,30 @@
 #include <Box2D/Box2D.h>
 
 #include "layers.h"
-#include "../core/random.h"
+#include "glrayfw/core/random.h"
 #include <cstdint>
 
 class Player;
+
+
+class AnyBodyInAreaQueryCallback : public b2QueryCallback
+{
+public:
+
+	bool ReportFixture(b2Fixture* f)
+	{
+		m_anyBodyDetected = true;
+		return true;
+	}
+
+	bool IsAnyBodyDetected()
+	{
+		return m_anyBodyDetected;
+	}
+
+private:
+	bool m_anyBodyDetected = false;
+};
 
 
 class Physics
@@ -31,6 +51,7 @@ public:
 	static const uint16_t EBULLET_MASK = CollisionLayer::MAP | CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 	static const uint16_t PICKUP_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
 	static const uint16_t PORTAL_MASK = CollisionLayer::PLAYER; // | CollisionLayer::ALLY
+	static const uint16_t ENEMY_UNDMG_MASK = CollisionLayer::PLAYER | CollisionLayer::ENEMY; // | CollisionLayer::ALLY
 
 	~Physics()
 	{
@@ -43,6 +64,11 @@ public:
 	b2Body* CreateSphereBody( float x, float y, uintptr_t userData, CollisionLayer category = CollisionLayer::ENEMY, uint16_t mask = MOB_MASK, bool isDynamic = true );
 	void AddCubeBody( float x, float y, uintptr_t userData);
 	void Step(float factor);
-
+	bool IsAnyBodyDetected(const b2AABB& area)
+	{
+		AnyBodyInAreaQueryCallback cb;
+		world->QueryAABB(&cb, area);
+		return cb.IsAnyBodyDetected();
+	}
 
 };

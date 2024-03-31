@@ -10,5 +10,6 @@ enum CollisionLayer
 	ENEMY			= 0x0010,
 	MAP				= 0x0020,
 	PICKUP			= 0x0040,
-	PORTAL			= 0x0080
+	PORTAL			= 0x0080,
+	ENEMY_UNDMG     = 0x0100
 };

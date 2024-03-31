@@ -19,7 +19,8 @@ public:
 		MOB,
 		PLAYER,
 		PICKUP,
-		PORTAL
+		PORTAL,
+		SPAWNER
 	};
 
 protected:
@@ -33,6 +34,7 @@ protected:
 
 public:
 
+	std::string name = "UNSET";
 	Transform transform;
 	EntityController* controller;
 	int framex, framey;
@@ -50,6 +52,8 @@ public:
 		controller = NULL;
 		type = Type::MOB;
 		this->transform.entity = this;
+		framex = framey = 0;
+		sprite = nullptr;
 	}
 
 	const char* TypeString()
@@ -103,9 +107,11 @@ public:
 
 	void Die()
 	{
-		assert(isAlive);
+		if (onDie && isAlive)
+		{
+			onDie(this);
+		}
 		isAlive = false;
-		onDie(this);
 	}
 
 	bool IsAlive()

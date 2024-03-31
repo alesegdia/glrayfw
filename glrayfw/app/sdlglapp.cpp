@@ -42,7 +42,7 @@ int SDLGLApp::Exec(int argc, char** argv)
     //winHeight = current.h;
 
     mainWindow = SDL_CreateWindow(
-		"SDL2 test",
+		"MINIRAY",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
         winWidth, winHeight, sdlwinflags);
