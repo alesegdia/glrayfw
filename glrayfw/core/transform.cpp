@@ -27,8 +27,10 @@ void Transform::Update(const Transform& parent, uint32_t delta)
 	cml::matrix_rotation_euler( worldrot, rotation[0], 0.f, 0.f, cml::EulerOrder::euler_order_yxz );
 	worldFinal = world * worldrot;
 
-	if( this->entity )
-		this->entity->Step( delta );
+	if (this->entity)
+	{
+		this->entity->Step(delta);
+	}
 
 	for( size_t i = 0; i < this->children.Size(); i++ )
 	{

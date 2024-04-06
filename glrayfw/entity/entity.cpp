@@ -4,19 +4,19 @@
 #include "controller/entitycontroller.h"
 
 Entity::~Entity() {
-	if( controller ) delete controller;
+	// if( controller ) delete controller;
 }
 
-void Entity::SetController( EntityController* controller )
+void Entity::AddController( const std::shared_ptr<EntityController>& controller )
 {
-	this->controller = controller;
+	controllers.push_back(controller);
 }
 
 void Entity::Step( uint32_t delta )
 {
-	if( this->controller )
+	for (auto& ctrl : controllers)
 	{
-		this->controller->Step( this, delta );
+		ctrl->DoStep(this, delta);
 	}
 }
 

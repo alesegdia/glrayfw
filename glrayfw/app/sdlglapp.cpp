@@ -67,7 +67,7 @@ int SDLGLApp::Exec(int argc, char** argv)
     //SDL_SetWindowSize(mainWindow, current.w, current.h);
 
     SDL_ShowCursor(0);
-	m_engine = std::make_shared<Engine>(sdlgl, winWidth, winHeight);
+	m_engine = std::make_shared<Engine>(sdlgl, winWidth, winHeight, mainWindow);
 
 	const unsigned char* vendor;
 	vendor = sdlgl->GetString(GL_VENDOR);
@@ -133,7 +133,6 @@ int SDLGLApp::Exec(int argc, char** argv)
         if( was_updated )
         {
             Render();
-            m_engine->renderer()->RenderFinish(mainWindow, origDelta);
         }
 	}
 

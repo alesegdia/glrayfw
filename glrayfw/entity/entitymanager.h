@@ -17,11 +17,13 @@ public:
 	void ClearAllEntities();
 	size_t NumEntities() { return entities.Size(); }
 	Entity* GetEntity(int i) { return entities[i]; }
+	void PreUpdate();
 
 private:
 
 	std::shared_ptr<Renderer> renderer;
 	DynamicArray<Entity*> entities;
+	std::vector<Entity*> dirtyEntities;
 
 };
 

@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include <SDL.h>
+
 namespace Render
 {
     class Context;
@@ -22,10 +24,11 @@ class Camera;
 class Transform;
 class Scene;
 
+
 class Engine
 {
 public:
-    Engine(Render::Context* gl, int winWidth, int winHeight);
+    Engine(Render::Context* gl, int winWidth, int winHeight, SDL_Window* window);
 
     const std::shared_ptr<Physics>& GetPhysics();
     void SetSlowDown(float slowdown);
@@ -57,4 +60,5 @@ private:
     int m_winWidth = 0;
     int m_winHeight = 0;
     std::shared_ptr<Transform> m_unitTransform;
+    SDL_Window* m_window;
 };

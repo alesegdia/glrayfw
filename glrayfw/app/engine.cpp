@@ -4,8 +4,8 @@
 #include "../entity/entitymanager.h"
 #include "../physics/physics.h"
 
-Engine::Engine(Render::Context* gl, int winWidth, int winHeight)
-    : m_gl(gl), m_winWidth(winWidth), m_winHeight(winHeight)
+Engine::Engine(Render::Context* gl, int winWidth, int winHeight, SDL_Window* window)
+    : m_gl(gl), m_winWidth(winWidth), m_winHeight(winHeight), m_window(window)
 {
 }
 
@@ -89,7 +89,7 @@ void Engine::Reset(b2ContactListener* contactListener)
 {
     m_slowDown = 1.0f;
     m_cam = std::make_shared<Camera>();
-    m_renderer = std::make_shared<Renderer>(m_gl, m_cam, m_winWidth, m_winHeight);
+    m_renderer = std::make_shared<Renderer>(m_gl, m_cam, m_winWidth, m_winHeight, m_window);
     m_emanager = std::make_shared<EntityManager>(m_renderer);
     m_physics = std::make_shared<Physics>(contactListener);
     m_cam->position(cml::vector3f(0, 0, 0));
@@ -108,6 +108,7 @@ void Engine::PostUpdate()
 void Engine::PreUpdate(uint32_t delta)
 {
     // Update everything
+    
     m_sceneRoot->Update(*m_unitTransform, delta * m_slowDown);
     m_physics->Step(m_slowDown);
 }

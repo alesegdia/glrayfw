@@ -14,17 +14,10 @@ private:
 	tdogl::Texture* tex;
 	Quad quad;
 	cml::vector2f size;
-	cml::vector2f /* i? */ current_frame, num_frames;
+	cml::vector2i current_frame, num_frames;
 
 
 public:
-
-	/*
-	class AnimData
-	{
-		float 
-	}
-	*/
 
 	void SetAngle( float angle )
 	{
@@ -48,13 +41,13 @@ public:
 		quad.Dispose( gl );
 	}
 
-	void SetCurrentFrame( float x, float y )
+	void SetCurrentFrame( int x, int y )
 	{
 		current_frame[0] = x;
 		current_frame[1] = y;
 	}
 
-	const cml::vector2f& CurrentFrame()
+	const cml::vector2i& CurrentFrame()
 	{
 		return current_frame;
 	}
@@ -73,5 +66,56 @@ public:
 	{
 		return quad;
 	}
+
+};
+
+
+class Animation
+{
+public:
+	void SetLoop(bool loop)
+	{
+		m_loop = loop;
+	}
+
+	void SetFrameDuration(uint32_t frameDuration)
+	{
+		m_frameDuration = frameDuration;
+	}
+
+	void AddFrame(const cml::vector2i& frame)
+	{
+		m_frames.push_back(frame);
+	}
+
+	void Update(uint32_t delta)
+	{
+		if (m_timer < GetAnimationDuration())
+		{
+			m_timer += delta;
+			m_currentFrame = m_timer / m_frameDuration;
+		}
+		else if (m_loop)
+		{
+			m_timer -= GetAnimationDuration();
+		}
+	}
+
+	const cml::vector2i& GetCurrentFrame()
+	{
+		return m_frames[m_currentFrame];
+	}
+
+private:
+	uint32_t GetAnimationDuration()
+	{
+		return m_frames.size() * m_frameDuration;
+	}
+
+	std::vector<cml::vector2i> m_frames;
+	int m_currentFrame;
+	uint32_t m_frameDuration;
+	bool m_loop = false;
+	uint32_t m_timer = 0;
 
 };

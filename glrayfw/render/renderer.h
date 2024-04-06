@@ -29,7 +29,7 @@ private:
 	float cube_fog_range;
 
 	Render::Context* gl;
-	Program quadprog, blockprog, planeprog, postprog, fontprog;
+	Program quadprog, blockprog, planeprog, postprog, fontprog, simplepostprog;
 
 	// usado para posteffects
 	GLuint frameBuffer, texColorBuffer, rboDepthStencil, postvao, postvbo;
@@ -44,6 +44,7 @@ private:
 	std::shared_ptr<Camera> cam;
 	Plane plane;
 	Font default_font;
+	Font small_font;
 
 	inline void bindVP( GLuint shaderprogram );
 	inline void bindVisionRange( GLuint shaderprogram );
@@ -53,6 +54,8 @@ private:
 	float m_greenScreen = 0.0f;
 	float m_orangeScreen = 0.0f;
 	float m_slowdown = 0.0f;
+
+	SDL_Window* window;
 
 	cml::vector3f m_clearColor = { 0.0f, 0.05f, 0.1f };
 
@@ -93,7 +96,7 @@ public:
 		m_orangeScreen += rs;
 	}
 
-	Renderer( Render::Context* gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight );
+	Renderer( Render::Context* gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight, SDL_Window* window );
 
 	void renderText( const char* text, float x, float y, cml::vector4f color = cml::vectorf(1.f,0.f,0.f,1.f), float sx_ = 1.f, float sy_ = 1.f );
 
@@ -114,8 +117,10 @@ public:
 	void RenderSprite3D( Sprite3D* sprite, const cml::matrix44f_c& model );
 	void RenderEntity( Entity* ent );
 
-	void RenderFinish( SDL_Window* mainWindow, uint32_t delta );
-    void RenderBlocks(Scene &scene, int i);
+	void RenderPostFX();
+	void RenderPostFXSimple();
+	void RenderFinish();
+	void RenderBlocks(Scene &scene, int i);
 	void SetupRender();
 
 	void RenderFloor( tdogl::Texture* t );

@@ -36,12 +36,36 @@ public:
 
 	std::string name = "UNSET";
 	Transform transform;
-	EntityController* controller;
 	int framex, framey;
 	std::function<void(Entity*)> onDie;
+	std::shared_ptr<Animation> anim = nullptr;
 
-	virtual void SetupFrame( const cml::vector3f& /* viewerPos */ ) {
-		framex = 0; framey = 0;
+	bool relativeToPlayerSprite = false;
+
+	void SetupFrameAbsolute() {
+		framex = 0;
+		framey = 0;
+	}
+
+	void SetupFrameRelativeToPlayerSprite(const cml::vector3f& viewerPos) {
+		cml::vector3f actor2pl = transform.position - viewerPos;
+		cml::vector3f rotactor = cml::rotate_vector(cml::vector3f(1, 0, 0), cml::vector3f(0, -1, 0), cml::rad(180.f) + transform.logic_angle);
+		float datAngle = 180 + cml::deg(cml::signed_angle_2D(cml::vector2f(actor2pl[0], actor2pl[2]), cml::vector2f(rotactor[0], rotactor[2])));
+		int q = (((int)(datAngle + 45)) % 360) / 90;
+		int corr[] = { 2,1,3,0 };
+		framex = corr[q];
+	}
+
+	void SetupFrame(const cml::vector3f& viewerPos)
+	{
+		if (relativeToPlayerSprite)
+		{
+			SetupFrameRelativeToPlayerSprite(viewerPos);
+		}
+		else
+		{
+			SetupFrameAbsolute();
+		}
 	}
 
 	virtual ~Entity();
@@ -49,7 +73,6 @@ public:
 	Entity()
 	{
 		isAlive = true;
-		controller = NULL;
 		type = Type::MOB;
 		this->transform.entity = this;
 		framex = framey = 0;
@@ -74,9 +97,23 @@ public:
 		}
 	}
 
-	void SetController( EntityController* controller );
+	void AddController( const std::shared_ptr<EntityController>& controller );
 
 	void Step( uint32_t delta );
+
+	template <typename T>
+	std::shared_ptr<T> GetController()
+	{
+		for (auto ctrl : controllers)
+		{
+			std::shared_ptr<T> ctrlDerived = std::dynamic_pointer_cast<T>(ctrl);
+			if (ctrlDerived != nullptr)
+			{
+				return std::move(ctrlDerived);
+			}
+		}
+		return nullptr;
+	}
 
 	void SetType( Entity::Type t )
 	{
@@ -202,5 +239,9 @@ public:
 	{
 		transform.logic_angle += cml::rad(angle);
 	}
+
+private:
+	std::vector<std::shared_ptr<EntityController>> controllers;
+
 
 };

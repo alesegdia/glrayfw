@@ -1,12 +1,13 @@
 
 #include "renderer.h"
 
-Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight)
+Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidth, int winHeight, SDL_Window* window)
 {
 	this->gl = gl;
 	this->ww = winWidth;
 	this->wh = winHeight;
 	this->cam = cam;
+	this->window = window;
 
 	fontprog.Prepare( gl, "assets/vs_font.vert", "assets/fs_font.frag" );
 	fontprog.Compile(gl);
@@ -14,7 +15,8 @@ Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidt
 	uniform_tex = gl->GetUniformLocation( fontprog.Object(), "tex" );
 	uniform_color = gl->GetUniformLocation( fontprog.Object(), "color" );
 	Font::Initialize();
-	default_font.Prepare( gl, "assets/mine.ttf", 96 );
+	default_font.Prepare(gl, "assets/mine.ttf", 96);
+	small_font.Prepare(gl, "assets/mine.ttf", 12);
 
 	gl->GenVertexArrays(1, &fontvao);
 	gl->GenBuffers(1, &fontvbo);
@@ -22,7 +24,8 @@ Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidt
 	blockprog.Prepare( gl, "assets/vs_mvptex_inst.vert", "assets/fs_mvptex_inst.frag" );
 	quadprog.Prepare( gl, "assets/vs_quadanim.vert", "assets/fs_quadanim.frag" );
 	planeprog.Prepare( gl, "assets/vs_plane.vert", "assets/fs_plane.frag" );
-	postprog.Prepare( gl, "assets/vs_post.vert", "assets/fs_post.frag" );
+	postprog.Prepare(gl, "assets/vs_post.vert", "assets/fs_post.frag");
+	simplepostprog.Prepare(gl, "assets/vs_post_simple.vert", "assets/fs_post_simple.frag");
 
 	GLuint pos_loc = 0;
 	GLuint tex_loc = 1;
@@ -214,7 +217,7 @@ void Renderer::RenderPlane(Plane *p, const cml::matrix44f_c &model, tdogl::Textu
 
 void Renderer::RenderSprite3D(Sprite3D *sprite, const cml::matrix44f_c &model)
 {
-	cml::vector2f f = sprite->CurrentFrame();
+	cml::vector2i f = sprite->CurrentFrame();
 	cml::vector2f s = sprite->FrameSize();
 	gl->BindVertexArray( sprite->GetQuad().GetVAO() );
 	gl->UniformMatrix4fv( gl->GetUniformLocation( quadprog.Object(), "model" ), 1, false, model.data() );
@@ -234,6 +237,11 @@ void Renderer::RenderEntity(Entity *ent)
 	Sprite3D* sprite = ent->GetSprite();
 	sprite->SetCurrentFrame(ent->framex, ent->framey);
 	//cml::vector2f f = sprite->CurrentFrame();
+	if (ent->anim != nullptr)
+	{
+		auto frame = ent->anim->GetCurrentFrame();
+		sprite->SetCurrentFrame(frame[0], frame[1]);
+	}
 	RenderSprite3D( sprite, ent->Model() );
 }
 
@@ -243,31 +251,18 @@ void Renderer::Update()
 	m_redScreen *= 0.9f;
 	m_greenScreen *= 0.9f;
 	m_orangeScreen *= 0.9f;
+
 }
 
-void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
+void Renderer::RenderPostFX()
 {
-	static uint32_t timer = 0;
-
 	gl->BindFramebuffer(GL_FRAMEBUFFER, 0);
 	gl->BindVertexArray(postvao);
 	gl->Disable(GL_DEPTH_TEST);
+
 	gl->UseProgram(postprog.Object());
 
-	if( timer >= 100 )
-	{
-		timer = delta;
-		for( int i = 0; i < 256; i++ )
-		{
-			float val = rng.uniform() / 4.f;
-			array[i] = val;
-		}
-	}
-	else
-	{
-		timer += delta;
-	}
-	gl->Uniform1fv( gl->GetUniformLocation( postprog.Object(), "scanarray" ), 256, array );
+	gl->Uniform1fv(gl->GetUniformLocation(postprog.Object(), "scanarray"), 256, array);
 	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "time"), SDL_GetTicks());
 	gl->Uniform1f(gl->GetUniformLocation(postprog.Object(), "health"), m_health);
 
@@ -279,9 +274,28 @@ void Renderer::RenderFinish(SDL_Window *mainWindow, uint32_t delta)
 	gl->ActiveTexture(GL_TEXTURE0);
 	gl->BindTexture(GL_TEXTURE_2D, texColorBuffer);
 
-	gl->DrawArrays( GL_QUADS, 0, 4 );
+	gl->DrawArrays(GL_QUADS, 0, 4);
 	gl->BindVertexArray(0);
-	SDL_GL_SwapWindow(mainWindow);
+}
+
+void Renderer::RenderPostFXSimple()
+{
+	gl->BindFramebuffer(GL_FRAMEBUFFER, 0);
+	gl->BindVertexArray(postvao);
+	gl->Disable(GL_DEPTH_TEST);
+
+	gl->UseProgram(simplepostprog.Object());
+
+	gl->ActiveTexture(GL_TEXTURE0);
+	gl->BindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	gl->DrawArrays(GL_QUADS, 0, 4);
+	gl->BindVertexArray(0);
+}
+
+void Renderer::RenderFinish()
+{
+	SDL_GL_SwapWindow(window);
 }
 
 void Renderer::RenderBlocks(Scene& scene, int i)

@@ -12,6 +12,12 @@ EntityManager::EntityManager( std::shared_ptr<Renderer> renderer ) {
 
 void EntityManager::AddEntity(Entity* e) {
 	this->entities.Add(e);
+	this->dirtyEntities.push_back(e);
+}
+
+void EntityManager::PreUpdate()
+{
+
 }
 
 void EntityManager::ClearDeadEntities() {
