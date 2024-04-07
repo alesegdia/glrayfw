@@ -27,6 +27,7 @@ Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidt
 	postprog.Prepare(gl, "assets/vs_post.vert", "assets/fs_post.frag");
 	simplepostprog.Prepare(gl, "assets/vs_post_simple.vert", "assets/fs_post_simple.frag");
 
+
 	GLuint pos_loc = 0;
 	GLuint tex_loc = 1;
 	GLuint model_loc = 2;
@@ -38,11 +39,17 @@ Renderer::Renderer(Render::Context *gl, std::shared_ptr<Camera> cam, int winWidt
 	quadprog.BindAttribLocation( gl, tex_loc, "in_TexCoord" );
 	quadprog.BindAttribLocation( gl, pos_loc, "in_Position" );
 
+	planeprog.AddUniform("view");
+	planeprog.AddUniform("proj");
+	planeprog.AddUniform("model");
+
 	blockprog.Compile(gl);
 	quadprog.Compile(gl);
 	planeprog.Compile(gl);
 	postprog.Compile(gl);
 	block.Prepare( gl );
+
+
 
 	gl->Enable(GL_CULL_FACE);
 	gl->Enable(GL_DEPTH_TEST);
@@ -197,6 +204,22 @@ void Renderer::BatchSprite3D()
 	bindVisionRange( shaderprogram );
 }
 
+class Material
+{
+public:
+	Material(std::shared_ptr<Program> program)
+	{
+
+	}
+
+private:
+	struct Uniform
+	{
+
+	};
+
+};
+
 void Renderer::RenderPlane(Plane *p, const cml::matrix44f_c &model, tdogl::Texture *tex)
 {
 	GLuint shaderprogram = planeprog.Object();
@@ -205,9 +228,9 @@ void Renderer::RenderPlane(Plane *p, const cml::matrix44f_c &model, tdogl::Textu
 	bindVisionRange( shaderprogram );
 
 	gl->BindVertexArray( p->GetVAO() );
-	gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "view" ), 1, false, cam->view().data() );
-	gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "proj" ), 1, false, cam->projection().data() );
-	gl->UniformMatrix4fv( gl->GetUniformLocation( planeprog.Object(), "model" ), 1, false, model.data() );
+	planeprog.SetUniformMatrix4fv("view", cam->view().data());
+	planeprog.SetUniformMatrix4fv("proj", cam->projection().data());
+	planeprog.SetUniformMatrix4fv("model", model.data());
 	gl->ActiveTexture( GL_TEXTURE0 );
 	gl->BindTexture( GL_TEXTURE_2D, tex->object() );
 	gl->Uniform1i( gl->GetUniformLocation( planeprog.Object(), "tex" ), 0 );
