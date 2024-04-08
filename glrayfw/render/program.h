@@ -87,6 +87,8 @@ public:
 		gl->AttachShader( handle, vert.Object() );
 		gl->AttachShader( handle, frag.Object() );
 		gl->LinkProgram( handle );
+		gl->DetachShader(handle, vert.Object());
+		gl->DetachShader(handle, frag.Object());
 
 		for (auto& entry : uniforms)
 		{

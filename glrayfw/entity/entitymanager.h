@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../core/dynamicarray.h"
-#include "../render/renderer.h"
 
 class Entity;
 
@@ -9,9 +8,8 @@ class EntityManager {
 public:
 	virtual ~EntityManager ();
 
-	EntityManager(std::shared_ptr<Renderer> renderer);
+	EntityManager();
 
-	void RenderEntities( float playerAngle );
 	void AddEntity(Entity* e);
 	void ClearDeadEntities();
 	void ClearAllEntities();
@@ -21,7 +19,6 @@ public:
 
 private:
 
-	std::shared_ptr<Renderer> renderer;
 	DynamicArray<Entity*> entities;
 	std::vector<Entity*> dirtyEntities;
 

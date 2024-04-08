@@ -6,8 +6,7 @@ EntityManager::~EntityManager() {
 	ClearAllEntities();
 }
 
-EntityManager::EntityManager( std::shared_ptr<Renderer> renderer ) {
-	this->renderer = renderer;
+EntityManager::EntityManager() {
 }
 
 void EntityManager::AddEntity(Entity* e) {
@@ -34,16 +33,6 @@ void EntityManager::ClearDeadEntities() {
 			l.RemoveLast(); // dealloc!! se olvida?
 			i--;
 		}
-	}
-}
-
-void EntityManager::RenderEntities( float playerAngle ) {
-	for( size_t i = 0; i < entities.Size(); i++ )
-	{
-		entities[i]->PhysicStep();
-		entities[i]->ClearVelocity();
-		entities[i]->SetAngleY( cml::rad(180 + playerAngle) );
-		renderer->RenderEntity( entities[i] );
 	}
 }
 

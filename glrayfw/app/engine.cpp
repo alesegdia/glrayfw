@@ -77,12 +77,7 @@ void Engine::SetSceneTextures(std::vector<tdogl::Texture*> texturesForTiles, tdo
 
 void Engine::sceneRender(float viewer_angle)
 {
-    m_renderer->SetupRender();
-    m_renderer->RenderFloor(m_scene->floorTex());
-    m_renderer->RenderRoof(m_scene->roofTex());
-    m_renderer->RenderMap(*m_scene);
-    m_renderer->BatchSprite3D();
-    m_emanager->RenderEntities(viewer_angle);
+    m_renderer->SceneRender(viewer_angle, *m_scene, m_emanager);
 }
 
 void Engine::Reset(b2ContactListener* contactListener)
@@ -90,7 +85,7 @@ void Engine::Reset(b2ContactListener* contactListener)
     m_slowDown = 1.0f;
     m_cam = std::make_shared<Camera>();
     m_renderer = std::make_shared<Renderer>(m_gl, m_cam, m_winWidth, m_winHeight, m_window);
-    m_emanager = std::make_shared<EntityManager>(m_renderer);
+    m_emanager = std::make_shared<EntityManager>();
     m_physics = std::make_shared<Physics>(contactListener);
     m_cam->position(cml::vector3f(0, 0, 0));
     m_cam->horizontalAngle(90);

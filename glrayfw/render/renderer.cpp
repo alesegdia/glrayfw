@@ -114,11 +114,6 @@ void Renderer::renderText(const char *text, float x, float y, cml::vector4f colo
 	gl->DisableVertexAttribArray(attribute_coord);
 }
 
-void Renderer::bindPostFBO()
-{
-	gl->BindFramebuffer( GL_FRAMEBUFFER, frameBuffer );
-}
-
 void Renderer::allocPostQuad()
 {
 	/*
@@ -159,14 +154,14 @@ void Renderer::renderPostQuad()
 	gl->BindVertexArray(0);
 }
 
-void Renderer::useDefaultFBO() { gl->BindFramebuffer( GL_FRAMEBUFFER, 0 ); }
-
-void Renderer::useCreatedFBO() { gl->BindFramebuffer( GL_FRAMEBUFFER, frameBuffer ); }
-
-void Renderer::renderClear()
+void Renderer::useDefaultFBO()
 {
-	gl->ClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], 1.0f);
-	gl->Clear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	m_useCreatedFBO = false;
+}
+
+void Renderer::useCreatedFBO()
+{
+	m_useCreatedFBO = true;
 }
 
 void Renderer::bindVP(GLuint shaderprogram)
@@ -182,6 +177,9 @@ void Renderer::bindVisionRange(GLuint shaderprogram)
 
 void Renderer::RenderMap(Scene& scene)
 {
+	RenderFloor(scene.floorTex());
+	RenderRoof(scene.roofTex());
+
 	GLuint shaderprogram = blockprog.Object();
 	gl->UseProgram( shaderprogram );
 	bindVP( shaderprogram );
@@ -203,22 +201,6 @@ void Renderer::BatchSprite3D()
 	bindVP( shaderprogram );
 	bindVisionRange( shaderprogram );
 }
-
-class Material
-{
-public:
-	Material(std::shared_ptr<Program> program)
-	{
-
-	}
-
-private:
-	struct Uniform
-	{
-
-	};
-
-};
 
 void Renderer::RenderPlane(Plane *p, const cml::matrix44f_c &model, tdogl::Texture *tex)
 {
@@ -318,6 +300,7 @@ void Renderer::RenderPostFXSimple()
 
 void Renderer::RenderFinish()
 {
+	RenderPostFX();
 	SDL_GL_SwapWindow(window);
 }
 
@@ -332,11 +315,12 @@ void Renderer::RenderBlocks(Scene& scene, int i)
     gl->DrawArraysInstanced( GL_TRIANGLES, 0, block.NumElements(), scene.getModelsNum(i) );
 }
 
-void Renderer::SetupRender() {
+void Renderer::RenderBegin() {
 	// SETUP MVP MATRICES
-	bindPostFBO();
+	gl->BindFramebuffer(GL_FRAMEBUFFER, m_useCreatedFBO ? frameBuffer : 0);
 	gl->Enable(GL_DEPTH_TEST);
-	renderClear();
+	gl->ClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], 1.0f);
+	gl->Clear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void Renderer::RenderFloor(tdogl::Texture *t) {

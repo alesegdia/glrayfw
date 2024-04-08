@@ -23,7 +23,20 @@ class EntityManager;
 class Camera;
 class Transform;
 class Scene;
+/*
+struct RenderEntity
+{
+    std::string textureID;
+    cml::matrix44f_c model;
+};
 
+struct RenderData
+{
+    std::vector<RenderEntity> renderEntities;
+    std::string floorTexture;
+    std::string roofTexture;
+};
+*/
 
 class Engine
 {
