@@ -5,6 +5,17 @@
 #include "Texture.h"
 #include "quad.h"
 
+enum class Side : int
+{
+	Left = 0,
+	Right,
+	Front,
+	Back,
+	Max,
+	None = -1
+};
+
+
 class Sprite3D
 {
 
@@ -69,6 +80,25 @@ public:
 
 };
 
+class AnimData
+{
+public:
+	void SetCurrentSide(Side side)
+	{
+		currentSide = side;
+	}
+
+	Side GetCurrentSide()
+	{
+		return currentSide;
+	}
+
+	cml::vector2i currentFrame;
+	uint32_t timer = 0;
+
+private:
+	Side currentSide = Side::None;
+};
 
 class Animation
 {
@@ -88,22 +118,21 @@ public:
 		m_frames.push_back(frame);
 	}
 
-	void Update(uint32_t delta)
+	void Update(uint32_t delta, AnimData& animData)
 	{
-		if (m_timer < GetAnimationDuration())
+		if (animData.timer < GetAnimationDuration())
 		{
-			m_timer += delta;
-			m_currentFrame = m_timer / m_frameDuration;
+			animData.timer += delta;
+			if (animData.timer < GetAnimationDuration())
+			{
+				auto currentFrameIndex = animData.timer / m_frameDuration;
+				animData.currentFrame = m_frames[currentFrameIndex];
+			}
 		}
 		else if (m_loop)
 		{
-			m_timer -= GetAnimationDuration();
+			animData.timer -= GetAnimationDuration();
 		}
-	}
-
-	const cml::vector2i& GetCurrentFrame()
-	{
-		return m_frames[m_currentFrame];
 	}
 
 private:
@@ -113,9 +142,36 @@ private:
 	}
 
 	std::vector<cml::vector2i> m_frames;
-	int m_currentFrame;
 	uint32_t m_frameDuration;
-	bool m_loop = false;
-	uint32_t m_timer = 0;
+	bool m_loop = true;
 
 };
+
+struct AnimationPack
+{
+public:
+	void SetSideAnimation(Side side, std::shared_ptr<Animation> anim)
+	{
+		sideAnimations[size_t(side)] = anim;
+	}
+
+	void Step(uint32_t delta, AnimData& animData)
+	{
+		auto currentSide = animData.GetCurrentSide();
+		if (currentSide != Side::None)
+		{
+			GetCurrentAnimation(currentSide)->Update(delta, animData);
+		}
+	}
+
+private:
+
+	const std::shared_ptr<Animation>& GetCurrentAnimation(Side side)
+	{
+		return sideAnimations[size_t(side)];
+	}
+
+	std::shared_ptr<Animation> sideAnimations[size_t(Side::Max)];
+
+};
+

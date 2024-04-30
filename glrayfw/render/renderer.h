@@ -1,23 +1,26 @@
 
 #pragma once
 
-#include "../render/sdlcontext.h"
-
 #include <cml/cml.h>
-#include "context.h"
-#include "Texture.h"
-#include "quad.h"
-#include "block.h"
-#include "sprite3d.h"
-#include "program.h"
-#include "../entity/entity.h"
-#include "plane.h"
-#include "../core/random.h"
-#include "../entity/pawn.h"
-#include "scene.h"
-#include "camera.h"
-#include "font.h"
-#include "../entity/entitymanager.h"
+
+#include <SDL.h>
+
+#include "glrayfw/core/random.h"
+
+#include "glrayfw/entity/entity.h"
+#include "glrayfw/entity/entitymanager.h"
+#include "glrayfw/entity/pawn.h"
+
+#include "glrayfw/render/block.h"
+#include "glrayfw/render/camera.h"
+#include "glrayfw/render/context.h"
+#include "glrayfw/render/plane.h"
+#include "glrayfw/render/font.h"
+#include "glrayfw/render/program.h"
+#include "glrayfw/render/quad.h"
+#include "glrayfw/render/sprite3d.h"
+#include "glrayfw/render/scene.h"
+#include "glrayfw/render/Texture.h"
 
 
 class Renderer

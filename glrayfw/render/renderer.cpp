@@ -241,12 +241,6 @@ void Renderer::RenderEntity(Entity *ent)
 	gl->UseProgram( quadprog.Object() );
 	Sprite3D* sprite = ent->GetSprite();
 	sprite->SetCurrentFrame(ent->framex, ent->framey);
-	//cml::vector2f f = sprite->CurrentFrame();
-	if (ent->anim != nullptr)
-	{
-		auto frame = ent->anim->GetCurrentFrame();
-		sprite->SetCurrentFrame(frame[0], frame[1]);
-	}
 	RenderSprite3D( sprite, ent->Model() );
 }
 

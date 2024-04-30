@@ -14,6 +14,14 @@ void Entity::AddController( const std::shared_ptr<EntityController>& controller 
 
 void Entity::Step( uint32_t delta )
 {
+	if (animationPack != nullptr)
+	{
+		animationPack->Step(delta, animData);
+		auto frame = animData.currentFrame;
+		framex = frame[0];
+		framey = frame[1];
+		std::cout << framex << ", " << framey << std::endl;
+	}
 	for (auto& ctrl : controllers)
 	{
 		ctrl->DoStep(this, delta);

@@ -38,9 +38,12 @@ public:
 	Transform transform;
 	int framex, framey;
 	std::function<void(Entity*)> onDie;
-	std::shared_ptr<Animation> anim = nullptr;
+	std::shared_ptr<AnimationPack> animationPack;
+	AnimData animData;
 
 	bool relativeToPlayerSprite = false;
+
+	bool animDirty = false;
 
 	void SetupFrameAbsolute() {
 		framex = 0;
@@ -52,8 +55,10 @@ public:
 		cml::vector3f rotactor = cml::rotate_vector(cml::vector3f(1, 0, 0), cml::vector3f(0, -1, 0), cml::rad(180.f) + transform.logic_angle);
 		float datAngle = 180 + cml::deg(cml::signed_angle_2D(cml::vector2f(actor2pl[0], actor2pl[2]), cml::vector2f(rotactor[0], rotactor[2])));
 		int q = (((int)(datAngle + 45)) % 360) / 90;
-		int corr[] = { 2,1,3,0 };
-		framex = corr[q];
+		Side corr[] = { Side::Right, Side::Back, Side::Left, Side::Front };
+		auto newSide = corr[q];
+		animData.SetCurrentSide(newSide);
+		// std::cout << size_t(newSide) << std::endl;
 	}
 
 	void SetupFrame(const cml::vector3f& viewerPos)
